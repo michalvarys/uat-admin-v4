@@ -12,15 +12,15 @@ export default ({ env }) => ({
 
     tasks: {
       "0 1 * * * *": async ({ strapi }) => {
-        const url =
-          env("SCRAPPER_URL", "http://localhost:8080/fb") ||
-          process.env.SCRAPPER_URL ||
-          "http://scrapper:8080/fb";
-        try {
-          await axios.post(url);
-        } catch (err) {
-          console.log(err);
-        }
+        // const url =
+        //   env("SCRAPPER_URL", "http://localhost:8080/fb") ||
+        //   process.env.SCRAPPER_URL ||
+        //   "http://scrapper:8080/fb";
+        // try {
+        //   await axios.post(url);
+        // } catch (err) {
+        //   console.log(err);
+        // }
       },
     },
   },
