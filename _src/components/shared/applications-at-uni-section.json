@@ -1,0 +1,20 @@
+{
+  "collectionName": "components_shared_applications_at_uni_sections",
+  "info": {
+    "name": "AppUniSection",
+    "displayName": "AppUniSection",
+    "icon": "book-open"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "list": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.short-text"
+    }
+  }
+}

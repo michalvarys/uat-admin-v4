@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_shared_tab_item_contents",
+  "info": {
+    "name": "TabItemContent",
+    "displayName": "TabItemContent",
+    "icon": "align-left",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "content": {
+      "type": "richtext"
+    },
+    "links": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::news-entry.news-entry"
+    }
+  }
+}

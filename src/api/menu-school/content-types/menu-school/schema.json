@@ -1,0 +1,74 @@
+{
+  "kind": "singleType",
+  "collectionName": "menu_schools",
+  "info": {
+    "singularName": "menu-school",
+    "pluralName": "menu-schools",
+    "displayName": "MenuSchool"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "title": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string"
+    },
+    "links": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "dynamiczone",
+      "components": [
+        "navigation.external-link",
+        "navigation.internal-link"
+      ],
+      "required": false
+    },
+    "contactSections": {
+      "type": "component",
+      "repeatable": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "shared.rich-text-with-title"
+    },
+    "news": {
+      "type": "component",
+      "repeatable": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "navigation.conditional-internal-link",
+      "required": true
+    },
+    "documents": {
+      "type": "component",
+      "repeatable": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "navigation.conditional-internal-link",
+      "required": true
+    }
+  }
+}

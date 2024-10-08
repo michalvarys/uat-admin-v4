@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_entries_single_entries",
+  "info": {
+    "name": "single_entry",
+    "displayName": "single_entry",
+    "icon": "angle-right"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "value": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

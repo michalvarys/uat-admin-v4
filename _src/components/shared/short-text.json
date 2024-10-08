@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_shared_short_texts",
+  "info": {
+    "name": "ShortText",
+    "displayName": "ShortText",
+    "icon": "align-center"
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

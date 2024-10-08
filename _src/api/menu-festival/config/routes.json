@@ -1,0 +1,28 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/menu-festivals",
+      "handler": "menu-festivals.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/menu-festivals",
+      "handler": "menu-festivals.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/menu-festivals",
+      "handler": "menu-festivals.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

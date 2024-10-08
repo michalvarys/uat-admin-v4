@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_entries_festival_entries",
+  "info": {
+    "name": "festival_entry",
+    "displayName": "festival_entry",
+    "icon": "baby-carriage",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "festival": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::festival.festival"
+    },
+    "title": {
+      "type": "string",
+      "private": true
+    }
+  }
+}

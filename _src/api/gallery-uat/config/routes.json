@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/galleries-uats",
+      "handler": "galleries-uat.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/galleries-uats/count",
+      "handler": "galleries-uat.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/galleries-uats/:id",
+      "handler": "galleries-uat.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/galleries-uats",
+      "handler": "galleries-uat.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/galleries-uats/:id",
+      "handler": "galleries-uat.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/galleries-uats/:id",
+      "handler": "galleries-uat.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

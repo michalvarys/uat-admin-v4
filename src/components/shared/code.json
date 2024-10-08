@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_shared_codes",
+  "info": {
+    "name": "code",
+    "displayName": "code",
+    "icon": "code"
+  },
+  "options": {},
+  "attributes": {
+    "content": {
+      "type": "richtext",
+      "required": true
+    }
+  }
+}

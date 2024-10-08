@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_shared_sponsors",
+  "info": {
+    "name": "Sponsor",
+    "displayName": "Sponsor",
+    "icon": "ad"
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "richtext",
+      "required": true
+    },
+    "image": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false,
+      "required": true
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/menu-students",
+      "handler": "menu-students.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/menu-students",
+      "handler": "menu-students.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/menu-students",
+      "handler": "menu-students.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

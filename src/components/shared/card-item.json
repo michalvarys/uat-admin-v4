@@ -1,0 +1,24 @@
+{
+  "collectionName": "components_shared_card_items",
+  "info": {
+    "name": "CardItem",
+    "displayName": "CardItem",
+    "icon": "columns"
+  },
+  "options": {},
+  "attributes": {
+    "Link": {
+      "type": "component",
+      "repeatable": false,
+      "component": "navigation.external-link"
+    },
+    "Image": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false,
+      "required": true
+    }
+  }
+}

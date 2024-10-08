@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_navigation_internal_links",
+  "info": {
+    "name": "InternalLink",
+    "displayName": "InternalLink",
+    "icon": "link",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "path": {
+      "type": "string"
+    }
+  }
+}

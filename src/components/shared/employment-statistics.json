@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_shared_employment_statistics",
+  "info": {
+    "name": "EmploymentStatistics",
+    "displayName": "EmploymentStatistics",
+    "icon": "angle-double-up"
+  },
+  "options": {},
+  "attributes": {
+    "statistic_entry": {
+      "type": "component",
+      "repeatable": true,
+      "component": "entries.statistic-entry"
+    }
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "collectionName": "components_shared_text_with_image_slice",
+  "info": {
+    "name": "TextWithImageSlice",
+    "displayName": "TextWithImageSlice",
+    "icon": "align-justify",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "subtitle": {
+      "type": "string"
+    },
+    "content": {
+      "type": "richtext",
+      "required": true
+    },
+    "left_side_image": {
+      "type": "boolean",
+      "default": true,
+      "required": true
+    },
+    "image": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false,
+      "required": true
+    },
+    "download_link": {
+      "type": "component",
+      "repeatable": false,
+      "component": "navigation.internal-link"
+    },
+    "link": {
+      "type": "component",
+      "repeatable": false,
+      "component": "navigation.internal-link"
+    }
+  }
+}

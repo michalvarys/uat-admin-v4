@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_shared_tabs",
+  "info": {
+    "name": "Tabs",
+    "displayName": "Tabs",
+    "icon": "grip-horizontal"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "tabs": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.tab-item"
+    }
+  }
+}

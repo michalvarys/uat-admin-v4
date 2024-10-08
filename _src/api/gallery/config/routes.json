@@ -1,0 +1,28 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/galleries",
+      "handler": "galleries.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/galleries",
+      "handler": "galleries.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/galleries",
+      "handler": "galleries.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

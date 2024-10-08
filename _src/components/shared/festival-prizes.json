@@ -1,0 +1,29 @@
+{
+  "collectionName": "components_shared_festival_prizes",
+  "info": {
+    "name": "festival_prizes",
+    "displayName": "festival_prizes",
+    "icon": "republican"
+  },
+  "options": {},
+  "attributes": {
+    "first_prize": {
+      "type": "string",
+      "required": true
+    },
+    "second_prize": {
+      "type": "string",
+      "required": true
+    },
+    "third_prize": {
+      "type": "string",
+      "required": true
+    },
+    "special_prize": {
+      "type": "string"
+    },
+    "honorable_mention": {
+      "type": "string"
+    }
+  }
+}

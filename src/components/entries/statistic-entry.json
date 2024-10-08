@@ -1,0 +1,20 @@
+{
+  "collectionName": "components_entries_statistic_entries",
+  "info": {
+    "name": "statistic_entry",
+    "displayName": "statistic_entry",
+    "icon": "user-graduate"
+  },
+  "options": {},
+  "attributes": {
+    "year": {
+      "type": "string",
+      "required": true
+    },
+    "single_entry": {
+      "type": "component",
+      "repeatable": true,
+      "component": "entries.single-entry"
+    }
+  }
+}

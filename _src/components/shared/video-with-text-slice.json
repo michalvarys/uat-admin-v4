@@ -1,0 +1,38 @@
+{
+  "collectionName": "components_shared_video_with_text_slices",
+  "info": {
+    "name": "VideoWithTextSlice",
+    "displayName": "VideoWithTextSlice",
+    "icon": "file-video",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "content": {
+      "type": "richtext",
+      "required": true
+    },
+    "download_link": {
+      "type": "component",
+      "repeatable": false,
+      "component": "navigation.external-link"
+    },
+    "cover_image": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false,
+      "required": true
+    },
+    "link": {
+      "type": "component",
+      "repeatable": false,
+      "component": "navigation.external-link"
+    },
+    "youtube_video_id": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

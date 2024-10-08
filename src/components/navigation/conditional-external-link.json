@@ -1,0 +1,24 @@
+{
+  "collectionName": "components_navigation_conditional_external_links",
+  "info": {
+    "name": "ConditionalExternalLink",
+    "displayName": "ConditionalExternalLink",
+    "icon": "unlink",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "url": {
+      "type": "string",
+      "required": true
+    },
+    "title": {
+      "type": "string"
+    },
+    "isVisible": {
+      "type": "boolean",
+      "default": true,
+      "required": true
+    }
+  }
+}

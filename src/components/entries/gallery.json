@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_entries_galleries",
+  "info": {
+    "name": "gallery",
+    "displayName": "gallery",
+    "icon": "grimace",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "galleries_uat": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::gallery-uat.gallery-uat"
+    },
+    "title": {
+      "type": "string",
+      "private": true
+    }
+  }
+}

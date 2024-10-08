@@ -1,0 +1,28 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/menu-applicants",
+      "handler": "menu-applicants.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/menu-applicants",
+      "handler": "menu-applicants.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/menu-applicants",
+      "handler": "menu-applicants.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

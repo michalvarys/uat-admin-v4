@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_entries_eu_project_entries",
+  "info": {
+    "name": "eu_project_entry",
+    "displayName": "eu_project_entry",
+    "icon": "desktop"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "link": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "string"
+    }
+  }
+}

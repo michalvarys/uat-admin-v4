@@ -1,0 +1,39 @@
+{
+  "collectionName": "components_shared_single_winners",
+  "info": {
+    "name": "single_winner",
+    "displayName": "SingleWinner",
+    "icon": "award",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "place": {
+      "type": "string",
+      "required": true
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "subtitle": {
+      "type": "string",
+      "required": true
+    },
+    "author": {
+      "type": "string",
+      "required": true
+    },
+    "link": {
+      "type": "string"
+    },
+    "imager": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false,
+      "required": true
+    }
+  }
+}

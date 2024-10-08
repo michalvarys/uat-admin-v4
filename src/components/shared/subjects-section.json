@@ -1,0 +1,20 @@
+{
+  "collectionName": "components_shared_subjects_sections",
+  "info": {
+    "name": "SubjectsSection",
+    "displayName": "SubjectsSection",
+    "icon": "book-open"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "list": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.short-text"
+    }
+  }
+}

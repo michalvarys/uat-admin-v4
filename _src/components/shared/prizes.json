@@ -1,0 +1,34 @@
+{
+  "collectionName": "components_shared_prizes",
+  "info": {
+    "name": "prizes",
+    "displayName": "Prizes",
+    "icon": "th-large",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "first_prize": {
+      "type": "string",
+      "required": true
+    },
+    "second_prize": {
+      "type": "string",
+      "required": true
+    },
+    "third_prize": {
+      "type": "string",
+      "required": true
+    },
+    "special_prize": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    },
+    "honorable_mentions": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    }
+  }
+}

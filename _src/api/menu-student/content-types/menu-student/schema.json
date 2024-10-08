@@ -1,0 +1,66 @@
+{
+  "kind": "singleType",
+  "collectionName": "menu_students",
+  "info": {
+    "singularName": "menu-student",
+    "pluralName": "menu-students",
+    "displayName": "MenuStudent"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "links": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "dynamiczone",
+      "components": [
+        "navigation.internal-link",
+        "navigation.external-link"
+      ],
+      "required": true
+    },
+    "title": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "news": {
+      "type": "component",
+      "repeatable": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "navigation.conditional-internal-link",
+      "required": true
+    },
+    "documents": {
+      "type": "component",
+      "repeatable": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "navigation.conditional-internal-link",
+      "required": true
+    }
+  }
+}

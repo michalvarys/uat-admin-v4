@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_entries_teacher_entries",
+  "info": {
+    "name": "teacher_entry",
+    "displayName": "teacher_entry",
+    "icon": "microscope",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "teacher": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::teacher.teacher"
+    },
+    "title": {
+      "type": "string",
+      "private": true
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_shared_festival_winners",
+  "info": {
+    "name": "festivalWinners",
+    "displayName": "festivalWinners",
+    "icon": "fingerprint",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "single_winner": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.single-winner"
+    },
+    "year": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

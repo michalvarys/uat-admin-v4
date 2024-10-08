@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_shared_gallery_images",
+  "info": {
+    "name": "GalleryImage",
+    "displayName": "GalleryImage",
+    "icon": "file-image",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "thumbnail_410x551": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false,
+      "required": true
+    },
+    "fullsize": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false,
+      "required": true
+    }
+  }
+}
