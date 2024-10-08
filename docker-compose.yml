@@ -1,0 +1,20 @@
+services:
+  uat-db:
+    restart: unless-stopped
+    image: bitnami/postgresql:11-debian-11
+    container_name: uat-db
+    volumes:
+      - uat_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=${DATABASE_USERNAME}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - POSTGRES_DB=${DATABASE_NAME}
+    ports:
+      - "5434:5432"
+    networks:
+      - proxy
+
+volumes:
+  uat_data:
+    name: uat-pg-data
+    driver: local
