@@ -824,13 +824,13 @@ export interface ApiAboutSchoolAboutSchool extends Schema.SingleType {
           localized: true;
         };
       }>;
-    EmploymentStatistics: Attribute.Component<'shared.employment-statistics'> &
+    employment_statistics: Attribute.Component<'shared.employment-statistics'> &
       Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
-    applicationsAtUniversity: Attribute.Component<'shared.applications-at-university'> &
+    applications_at_university: Attribute.Component<'shared.applications-at-university'> &
       Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
@@ -848,7 +848,7 @@ export interface ApiAboutSchoolAboutSchool extends Schema.SingleType {
           localized: true;
         };
       }>;
-    euProjects: Attribute.Component<'entries.eu-project-entry', true> &
+    eu_projects: Attribute.Component<'entries.eu-project-entry', true> &
       Attribute.SetPluginOptions<{
         i18n: {
           localized: true;

@@ -44,7 +44,7 @@
       },
       "component": "shared.you-tube-player-slice"
     },
-    "EmploymentStatistics": {
+    "employment_statistics": {
       "type": "component",
       "repeatable": false,
       "pluginOptions": {
@@ -54,7 +54,7 @@
       },
       "component": "shared.employment-statistics"
     },
-    "applicationsAtUniversity": {
+    "applications_at_university": {
       "type": "component",
       "repeatable": false,
       "pluginOptions": {
@@ -77,7 +77,7 @@
         "navigation.internal-link"
       ]
     },
-    "euProjects": {
+    "eu_projects": {
       "type": "component",
       "repeatable": true,
       "pluginOptions": {

@@ -1,7 +1,7 @@
 {
   "collectionName": "components_shared_employment_statistics",
   "info": {
-    "name": "EmploymentStatistics",
+    "name": "employment_statistics",
     "displayName": "EmploymentStatistics",
     "icon": "angle-double-up"
   },

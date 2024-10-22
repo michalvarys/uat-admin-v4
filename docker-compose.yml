@@ -12,7 +12,22 @@ services:
     ports:
       - "5434:5432"
 
+  pgadmin: 
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=sufursky@gmail.com
+      - PGADMIN_DEFAULT_PASSWORD=123456789
+    ports: 
+      - 8080:80
+      - 5050:5050
+    networks:
+      - proxy
+
 volumes:
   uat_data:
     name: uat-db-v4-new-up-new
     driver: local
+  
+networks:
+  proxy:
+    external: true

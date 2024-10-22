@@ -14,6 +14,7 @@ export default factories.createCoreController(
   "api::homepage.homepage",
   ({ strapi }) => {
     return {
+      // TODO
       async find(ctx) {
         const { request, response } = ctx;
         const url = new URL(request.url, "http://localhost");
@@ -69,42 +70,88 @@ export default factories.createCoreController(
             }
           );
 
-          const galleries = await strapi.service("api::gallery.gallery").find({
-            locale,
-          });
-
-          const galleryEvents = await strapi
-            .service("api::gallery-event.gallery-event")
-            .find({
+          const galleries = await strapi.entityService.findMany(
+            "api::gallery.gallery",
+            {
               where: { locale },
+              populate: "*",
+            }
+          );
+
+          const galleryEvents = await strapi.entityService.findMany(
+            "api::gallery-event.gallery-event",
+            {
+              where: { locale },
+              populate: "*",
+            }
+          );
+
+          const footer = await strapi.entityService.findMany(
+            "api::footer.footer",
+            {
+              where: { locale },
+              populate: "*",
+            }
+          );
+
+          const homepage = await strapi.entityService.findMany(
+            "api::homepage.homepage",
+            {
+              publicationState: "live",
+              where: { locale },
+              populate: {
+                sections: {
+                  populate: "*",
+                },
+                text_with_image: {
+                  populate: "*",
+                },
+                galleries: {
+                  populate: {
+                    title: true,
+                    subtitle: true,
+                    description: true,
+                    galleries_uat: {
+                      populate: {
+                        image_424x488: true,
+                        address: true,
+                        name: true,
+                      },
+                    },
+                    image: true,
+                  },
+                },
+                video_with_text: {
+                  populate: "*",
+                },
+                fields_of_studies: true,
+                festivals: true,
+                cover_image: true,
+                logo: true,
+              },
+            }
+          );
+
+          const fields_of_studies = await strapi
+            .service("api::field-of-study.field-of-study")
+            .find({
+              where: {
+                id: homepage.fields_of_studies.map(({ id }) => id),
+              },
+              populate: "*",
             });
 
-          const footer = await strapi.service("api::footer.footer").find({
-            where: { locale },
-            populate: {
-              footer_sections: true,
-              instagram: true,
-              youtube: true,
-              facebook: true,
-            },
-          });
-
-          const homepage = await strapi.service("api::homepage.homepage").find({
-            where: { locale },
-            populate: {
-              sections: true,
-              text_with_image: true,
-              fields_of_studies: true,
-              cover_image: true,
-              festivals: true,
-              galleries: true,
-              video_with_text: true,
-              logo: true,
-            },
-          });
+          const festivals = await strapi
+            .service("api::festival.festival")
+            .find({
+              where: {
+                id: homepage.festivals.map(({ id }) => id),
+              },
+              populate: "*",
+              sort: "title:asc",
+            });
 
           const sanitizedGalleries = await sanitize(galleries);
-
           const transformedUATGalleries = homepage?.galleries?.map((item) => {
             if (item.galleries_uat?.image_424x488) {
               let transformed = {
@@ -122,6 +169,7 @@ export default factories.createCoreController(
           const home = await sanitize(homepage);
           const result = {
             ...home,
+            festivals: await sanitize(festivals),
             news: await sanitize(news),
             importantNews: await sanitize(importantNews),
             galleries: {
@@ -129,18 +177,13 @@ export default factories.createCoreController(
               galleries_uats: transformedUATGalleries,
             },
             galleryEvents: await sanitize(galleryEvents),
-            fields_of_studies: await sanitize(
-              (home.fields_of_studies || [])
-                .map((item) => item.field_of_study)
-                .slice(0, 5)
-            ),
+            fields_of_studies: await sanitize(fields_of_studies),
             social: {
               facebook: footerData?.facebook,
               instagram: footerData?.instagram,
               youtube: footerData?.youtube,
             },
           };
-          console.log(result);
 
           return result;
         } catch (err) {

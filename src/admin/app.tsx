@@ -1,4 +1,4 @@
-import type { StrapiApp } from "@strapi/strapi/admin";
+import type { RenderAdminArgs } from "@strapi/strapi/admin";
 
 export default {
   config: {
@@ -32,7 +32,7 @@ export default {
       // 'zh',
     ],
   },
-  bootstrap(app: StrapiApp) {
+  bootstrap(app: RenderAdminArgs) {
     console.log({ app });
   },
 };
