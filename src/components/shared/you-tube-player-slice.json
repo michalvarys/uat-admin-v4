@@ -8,11 +8,11 @@
   },
   "options": {},
   "attributes": {
-    "youtubeVideoId": {
+    "youtube_video_id": {
       "type": "string",
       "required": true
     },
-    "coverImage": {
+    "cover_image": {
       "type": "media",
       "multiple": false,
       "required": false,

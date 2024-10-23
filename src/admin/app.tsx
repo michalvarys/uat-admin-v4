@@ -32,7 +32,5 @@ export default {
       // 'zh',
     ],
   },
-  bootstrap(app: RenderAdminArgs) {
-    console.log({ app });
-  },
+  bootstrap(app: RenderAdminArgs) {},
 };

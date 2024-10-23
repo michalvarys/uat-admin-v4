@@ -9,8 +9,8 @@ export interface SharedYouTubePlayerSlice extends Schema.Component {
     displayName: 'YouTubePlayerSlice';
   };
   attributes: {
-    youtubeVideoId: Attribute.String & Attribute.Required;
-    coverImage: Attribute.Media<'images'>;
+    youtube_video_id: Attribute.String & Attribute.Required;
+    cover_image: Attribute.Media<'images'>;
   };
 }
 
@@ -333,20 +333,7 @@ export interface SharedApplicationsAtUniversity extends Schema.Component {
   };
   attributes: {
     header: Attribute.String & Attribute.Required;
-    sections: Attribute.Component<'shared.applications-at-uni-section', true>;
-  };
-}
-
-export interface SharedApplicationsAtUniSection extends Schema.Component {
-  collectionName: 'components_shared_applications_at_uni_sections';
-  info: {
-    name: 'app_uni_section';
-    displayName: 'AppUniSection';
-    icon: 'book-open';
-  };
-  attributes: {
-    title: Attribute.String & Attribute.Required;
-    list: Attribute.Component<'shared.short-text', true>;
+    sections: Attribute.Component<'shared.subjects-section', true>;
   };
 }
 
@@ -591,7 +578,6 @@ declare module '@strapi/types' {
       'shared.cards': SharedCards;
       'shared.card-item': SharedCardItem;
       'shared.applications-at-university': SharedApplicationsAtUniversity;
-      'shared.applications-at-uni-section': SharedApplicationsAtUniSection;
       'navigation.internal-link': NavigationInternalLink;
       'navigation.image-box-link': NavigationImageBoxLink;
       'navigation.footer-section': NavigationFooterSection;

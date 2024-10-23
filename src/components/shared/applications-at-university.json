@@ -14,7 +14,7 @@
     "sections": {
       "type": "component",
       "repeatable": true,
-      "component": "shared.applications-at-uni-section"
+      "component": "shared.subjects-section"
     }
   }
 }

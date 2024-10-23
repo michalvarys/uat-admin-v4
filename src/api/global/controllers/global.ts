@@ -1,32 +1,16 @@
+import { getResults } from "../../../utils/response";
+
 export default {
   async globalData(ctx, next) {
+    const { query } = ctx;
+    const { locale = "sk" } = query;
     // TODO
-    console.log("hello", ctx.body);
-    const {} = ctx;
-    const sanitize = async (data) => {
-      if (!data) {
-        return;
-      }
-
-      // @ts-ignore
-      const sanitized = data; //await this.sanitizeOutput(data, ctx);
-      // @ts-ignore
-      if (sanitized.results) {
-        // @ts-ignore
-        return sanitized.results;
-      }
-
-      return sanitized;
-    };
-
-    const locale = ctx?.query?.locale || "sk";
+    const sanitize = async (data) => getResults(data);
 
     const menuStudents = await strapi.entityService.findMany(
       "api::menu-student.menu-student",
       {
-        where: {
-          locale,
-        },
+        locale,
         populate: {
           documents: {
             populate: "*",
@@ -47,12 +31,11 @@ export default {
         },
       }
     );
+
     const menuApplicants = await strapi.entityService.findMany(
       "api::menu-applicant.menu-applicant",
       {
-        where: {
-          locale,
-        },
+        locale,
         populate: {
           bottomLeftLink: {
             populate: "*",
@@ -79,9 +62,7 @@ export default {
     const menuSchool = await strapi.entityService.findMany(
       "api::menu-school.menu-school",
       {
-        where: {
-          locale,
-        },
+        locale,
         populate: {
           contactSections: {
             populate: "*",
@@ -102,9 +83,7 @@ export default {
     const menuFestivals = await strapi.entityService.findMany(
       "api::menu-festival.menu-festival",
       {
-        where: {
-          locale,
-        },
+        locale,
         populate: {
           festivals: {
             populate: {
@@ -126,15 +105,15 @@ export default {
     const festivals = await strapi.service("api::festival.festival").find({
       where: {
         id: menuFestivals.festivals?.map(({ id }) => id),
-        locale,
       },
+      locale,
       populate: "*",
       sort: "title:asc",
     });
 
     const global = {}; //await strapi.services.global.find(ctx.query);
     const footer = await strapi.entityService.findMany("api::footer.footer", {
-      where: { locale },
+      locale,
       populate: {
         youtube: {
           populate: "*",
@@ -174,8 +153,6 @@ export default {
         }),
       ].filter((item) => item !== null),
     };
-
-    ctx.body = result;
 
     return result;
   },

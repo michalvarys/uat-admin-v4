@@ -2018,7 +2018,6 @@ export interface ApiPagePage extends Schema.CollectionType {
         };
       }>;
     cover_image: Attribute.Media<'images'> &
-      Attribute.Required &
       Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
