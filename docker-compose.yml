@@ -2,12 +2,12 @@ services:
   strapi:
     container_name: strapi
     build: .
-    image: strapi:latest
+    image: michalvarys/uat-admin-v4:latest
     restart: unless-stopped
     env_file: .env
     environment:
       DATABASE_CLIENT: ${DATABASE_CLIENT}
-      DATABASE_HOST: strapiDB
+      DATABASE_HOST: ${DATABASE_HOST}
       DATABASE_PORT: ${DATABASE_PORT}
       DATABASE_NAME: ${DATABASE_NAME}
       DATABASE_USERNAME: ${DATABASE_USERNAME}
@@ -17,16 +17,17 @@ services:
       APP_KEYS: ${APP_KEYS}
       NODE_ENV: ${NODE_ENV}
     volumes:
-      - ./config:/opt/app/config
-      - ./src:/opt/app/src
-      - ./package.json:/opt/package.json
-      - ./yarn.lock:/opt/yarn.lock
+      # - ./config:/opt/app/config
+      # - ./src:/opt/app/src
+      # - ./package.json:/opt/package.json
+      # - ./yarn.lock:/opt/yarn.lock
       - ./.env:/opt/app/.env
       - ./public/uploads:/opt/app/public/uploads
     ports:
       - "1337:1337"
     networks:
       - strapi
+      - proxy
       
   uat-db-v4:
     restart: unless-stopped
