@@ -3,7 +3,7 @@ export default ({ env }) => ({
     enabled: true,
     resolve:
       env("NODE_ENV", "development") === "production"
-        ? "/opt/app/node_modules/@ssupat/tiptap-editor"
+        ? "@ssupat/tiptap-editor"
         : "node_modules/@ssupat/tiptap-editor",
   },
 });
