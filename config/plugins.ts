@@ -1,6 +1,6 @@
 export default () => ({
-  wysiwyg: {
+  "tiptap-editor": {
     enabled: true,
-    resolve: "./src/plugins/wysiwyg",
+    resolve: "./src/plugins/tiptap-editor",
   },
 });

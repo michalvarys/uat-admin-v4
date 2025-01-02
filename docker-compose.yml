@@ -48,7 +48,7 @@ services:
       - PGADMIN_DEFAULT_EMAIL=sufursky@gmail.com
       - PGADMIN_DEFAULT_PASSWORD=123456789
     ports: 
-      - 8080:80
+      - 38080:80
       - 5050:5050
     networks:
       - proxy
