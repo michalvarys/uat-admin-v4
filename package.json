@@ -16,7 +16,6 @@
     "types": "npm run strapi ts:generate-types --debug"
   },
   "dependencies": {
-    "@magictm/strapi-plugin-tiptap-editor": "^0.1.7",
     "@strapi/plugin-cloud": "4.25.13",
     "@strapi/plugin-i18n": "4.25.13",
     "@strapi/plugin-users-permissions": "4.25.13",
