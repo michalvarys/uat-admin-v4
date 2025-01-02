@@ -1,6 +1,9 @@
-export default () => ({
+export default ({ env }) => ({
   "tiptap-editor": {
     enabled: true,
-    resolve: "node_modules/@ssupat/tiptap-editor",
+    resolve:
+      env("NODE_ENV", "development") === "production"
+        ? "/opt/app/node_modules/@ssupat/tiptap-editor"
+        : "node_modules/@ssupat/tiptap-editor",
   },
 });
