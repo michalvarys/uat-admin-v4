@@ -1,6 +1,6 @@
 export default () => ({
   "tiptap-editor": {
     enabled: true,
-    resolve: "./src/plugins/tiptap-editor",
+    resolve: "node_modules/@ssupat/tiptap-editor",
   },
 });

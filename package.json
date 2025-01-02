@@ -22,6 +22,7 @@
     "@strapi/plugin-users-permissions": "4.25.13",
     "@strapi/strapi": "4.25.13",
     "@ssupat/components": "^0.0.11",
+    "@ssupat/tiptap-editor": "^0.0.2",
     "better-sqlite3": "8.6.0",
     "pg": "^8.13.0",
     "react": "^18.0.0",
