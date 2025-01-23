@@ -27,7 +27,7 @@
     "link": {
       "type": "string"
     },
-    "imager": {
+    "image": {
       "allowedTypes": [
         "images"
       ],
