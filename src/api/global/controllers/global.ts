@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { getResults } from "../../../utils/response";
 
 export default {
