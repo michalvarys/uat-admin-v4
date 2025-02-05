@@ -1935,6 +1935,7 @@ export interface ApiNewsEntryNewsEntry extends Schema.CollectionType {
         };
       }> &
       Attribute.DefaultTo<false>;
+    blinking: Attribute.Boolean & Attribute.DefaultTo<false>;
     facebook_id: Attribute.String &
       Attribute.Private &
       Attribute.Unique &

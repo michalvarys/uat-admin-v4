@@ -70,6 +70,11 @@
       "default": false,
       "required": true
     },
+    "blinking": {
+      "type": "boolean",
+      "default": false,
+      "required": false
+    },
     "facebook_id": {
       "pluginOptions": {
         "i18n": {
