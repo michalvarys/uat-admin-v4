@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@ssupat/components": "^0.0.17",
-    "@ssupat/tiptap-editor": "0.0.10",
+    "@ssupat/tiptap-editor": "0.0.11",
     "@strapi/plugin-cloud": "4.25.13",
     "@strapi/plugin-i18n": "4.25.13",
     "@strapi/plugin-users-permissions": "4.25.13",
