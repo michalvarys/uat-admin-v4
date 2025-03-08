@@ -8,7 +8,7 @@ export default ({ env }) => ({
   // },
   "tiptap-editor": {
     enabled: true,
-    resolve: "./src/plugins/uat-tiptap-editor",
+    resolve: "./src/plugins/tiptap-editor",
   },
   upload: {
     config: {
