@@ -1774,10 +1774,10 @@
     react "^18.2.0"
     react-icons "^5.4.0"
 
-"@ssupat/tiptap-editor@0.0.10":
-  version "0.0.10"
-  resolved "https://registry.yarnpkg.com/@ssupat/tiptap-editor/-/tiptap-editor-0.0.10.tgz#01b9347dcfe06e33794ef6fc9c3b3501531ff8bf"
-  integrity sha512-J+VHHxPDUAFm6I1Jxw9pnsHn2eTSbhS0S6jDDFjzIoYgcnoeSplgWZ9W6P3Y+3co9NXP40b3kMgjqgueyINsAw==
+"@ssupat/tiptap-editor@0.0.11":
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/@ssupat/tiptap-editor/-/tiptap-editor-0.0.11.tgz#c7020fa1a42e41b4c44aa686409a36cd209e984d"
+  integrity sha512-S/pfVig14+ySSupnb4mWhJdF+eK5dpzanPLJkAqD4vNe3XbMe48oqjXTFds+QmtZAa3hXhyteHNZvFLScsThjw==
   dependencies:
     "@chakra-ui/anatomy" "^2.3.4"
     "@chakra-ui/icons" "^2.2.4"
@@ -1787,6 +1787,7 @@
     "@ssupat/components" "^0.0.17"
     "@strapi/design-system" "1.19.0"
     "@strapi/helper-plugin" "4.25.13"
+    "@strapi/icons" "1.19.0"
     "@tiptap/core" "^2.10.3"
     "@tiptap/extension-blockquote" "^2.0.0-beta.218"
     "@tiptap/extension-bold" "^2.0.0-beta.218"
