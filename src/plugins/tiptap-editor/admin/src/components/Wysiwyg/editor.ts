@@ -1,19 +1,6 @@
 import PropTypes from "prop-types";
 import React, { useState, useEffect } from "react";
-import Wrapper from "./style";
-import {
-  Box,
-  Stack,
-  Flex,
-  Field,
-  Typography,
-  FieldLabel,
-} from "@strapi/design-system";
-import { useIntl } from "react-intl";
-import MenuBar from "./MenuBar";
-import EditorDebug from "./EditorDebug";
-
-import { EditorContent, useEditor } from "@tiptap/react";
+import { useEditor } from "@tiptap/react";
 
 // Tiptap Extensions
 import BoldExtension from "@tiptap/extension-bold";
@@ -51,6 +38,8 @@ import { HTMLCodeBlockExtension } from "./plugins/code/HTMLCodeBlockExtension";
 import { BoxExtension } from "./plugins/box/BoxExtension";
 import { StackExtension } from "./plugins/stack/StackExtension";
 import { TabsExtension } from "./plugins/tabs/TabsExtension";
+import { ChakraImageExtension } from "./plugins/image/ImageExtension";
+import { GalleryExtension } from "./plugins/gallery/GalleryExtension";
 
 export function useCustomEditor(opts) {
   const {
@@ -74,6 +63,8 @@ export function useCustomEditor(opts) {
 
   const editor = useEditor({
     extensions: [
+      ChakraImageExtension,
+      GalleryExtension,
       TabsExtension,
       StackExtension,
       BoxExtension,
@@ -95,7 +86,6 @@ export function useCustomEditor(opts) {
         openOnClick: false,
       }),
       // CustomLink,
-      ImageExtension,
       TextAlignExtension.configure({
         types: ["heading", "paragraph"],
       }),

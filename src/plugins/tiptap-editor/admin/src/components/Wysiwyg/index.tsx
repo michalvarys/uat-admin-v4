@@ -16,6 +16,7 @@ import EditorDebug from './EditorDebug'
 import { EditorContent } from '@tiptap/react'
 import CharacterCounter from './CharacterCounter'
 import { useCustomEditor } from './editor'
+import { GalleryProvider } from './plugins/gallery/GalleryContext'
 
 const Wysiwyg = (opts) => {
     const {
@@ -66,30 +67,32 @@ const Wysiwyg = (opts) => {
                 <Wrapper>
                     <Flex gap={1} alignItems={'flex-start'}>
                         <Box hasRadius overflow={'hidden'} style={{ flex: '1' }}>
-                            <MenuBar
-                                editor={editor}
-                                debug={debug}
-                                setDebug={setDebug}
-                                playground={playground}
-                            />
-                            <Box
-                                className="editor-content-wrapper"
-                                padding={2}
-                                background="neutral0"
-                                maxHeight={'600px'}
-                                minHeight={'100px'}
-                                style={{ resize: 'vertical', overflow: 'auto' }}
-                            >
-                                {/* @ts-ignore */}
-                                <EditorContent editor={editor} />
-                            </Box>
-
-                            {editor && (
-                                <CharacterCounter
+                            <GalleryProvider editor={editor}>
+                                <MenuBar
                                     editor={editor}
-                                    characterLimit={characterLimit}
+                                    debug={debug}
+                                    setDebug={setDebug}
+                                    playground={playground}
                                 />
-                            )}
+                                <Box
+                                    className="editor-content-wrapper"
+                                    padding={2}
+                                    background="neutral0"
+                                    maxHeight={'600px'}
+                                    minHeight={'100px'}
+                                    style={{ resize: 'vertical', overflow: 'auto' }}
+                                >
+                                    {/* @ts-ignore */}
+                                    <EditorContent editor={editor} />
+                                </Box>
+
+                                {editor && (
+                                    <CharacterCounter
+                                        editor={editor}
+                                        characterLimit={characterLimit}
+                                    />
+                                )}
+                            </GalleryProvider>
                         </Box>
                         {debug && playground && (
                             <Box

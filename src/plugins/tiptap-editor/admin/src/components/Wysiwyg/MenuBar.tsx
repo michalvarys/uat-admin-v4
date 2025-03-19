@@ -46,6 +46,8 @@ import { TableControls } from "./plugins/table/TableControls";
 import { PlusSquareIcon } from "@chakra-ui/icons";
 import SvgStack from "@strapi/icons/Stack.js";
 import TabIcon from "@strapi/icons/Blocks.js";
+import TiptapChakraImage from "./plugins/image/TiptapChakraImage";
+import TiptapChakraGallery from "./plugins/gallery/TiptapChakraGallery";
 
 const onHeadingChange = (editor, type) => {
     switch (type) {
@@ -284,6 +286,8 @@ const MenuBar = ({ editor, debug, setDebug, playground }) => {
                     {/* Custom */}
                     <IconButtonGroup>
                         <LinkButton editor={editor} />
+                        {/* <TiptapChakraImage editor={editor} /> */}
+                        <TiptapChakraGallery editor={editor} />
                         <IconButton
                             icon={<FaChevronDown />}
                             label="Přidat Accordion"

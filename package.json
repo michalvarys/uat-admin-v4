@@ -16,15 +16,17 @@
     "types": "npm run strapi ts:generate-types --debug"
   },
   "dependencies": {
-    "@ssupat/components": "^0.0.17",
+    "@ssupat/components": "^0.0.23",
     "@ssupat/tiptap-editor": "0.0.13",
     "@strapi/plugin-cloud": "4.25.13",
     "@strapi/plugin-i18n": "4.25.13",
     "@strapi/plugin-users-permissions": "4.25.13",
     "@strapi/strapi": "4.25.13",
+    "@types/react-beautiful-dnd": "^13.1.8",
     "better-sqlite3": "8.6.0",
     "pg": "^8.13.0",
     "react": "^18.0.0",
+    "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18.0.0",
     "react-router-dom": "5.3.4",
     "sharp": "^0.33.5",
