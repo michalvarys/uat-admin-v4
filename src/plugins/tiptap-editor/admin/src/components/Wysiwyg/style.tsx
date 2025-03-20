@@ -201,6 +201,34 @@ export default styled(Box)`
             border-top: 2px solid rgba(13, 13, 13, 0.1);
             margin: 1rem 0;
         }
+        
+        /* Link styles */
+        a.custom-link {
+            color: #FF7A00;
+            text-decoration: underline;
+            
+            &:hover {
+                color: #fff;
+            }
+            
+            /* Button style for links */
+            &.button {
+                display: inline-block;
+                padding: 0.5rem 1rem;
+                background-color: transparent;
+                color: #fff;
+                text-decoration: none;
+                border: 2px solid #fff;
+                font-weight: 600;
+                transition: background-color 0.2s ease;
+                text-transform: uppercase;
+                
+                &:hover {
+                    border-color: #FF7A00;
+                    color: #FF7A00;
+                }
+            }
+        }
         table {
             width: 100%;
             table-layout: fixed;

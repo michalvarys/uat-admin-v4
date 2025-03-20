@@ -41,7 +41,7 @@ import {
 import { FaRemoveFormat as RemoveFormatIcon } from "react-icons/fa";
 import { FaLink as ButtonLinkIcon, FaChevronDown } from "react-icons/fa";
 import React, { useState } from "react";
-import LinkButton from "./plugins/LinkButon";
+import LinkButton from "./plugins/link";
 import { TableControls } from "./plugins/table/TableControls";
 import { PlusSquareIcon } from "@chakra-ui/icons";
 import SvgStack from "@strapi/icons/Stack.js";

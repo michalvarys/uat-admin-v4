@@ -32,7 +32,7 @@ import HardBreakExtension from "@tiptap/extension-hard-break";
 import HighlightExtension from "@tiptap/extension-highlight";
 import HorizontalRuleExtension from "@tiptap/extension-horizontal-rule";
 import CharacterCounter from "./CharacterCounter";
-import { CustomLink } from "./plugins/LinkButon";
+import { CustomLink } from "./plugins/link";
 import { AccordionExtension } from "./plugins/accordin/AccordionExtension";
 import { HTMLCodeBlockExtension } from "./plugins/code/HTMLCodeBlockExtension";
 import { BoxExtension } from "./plugins/box/BoxExtension";
