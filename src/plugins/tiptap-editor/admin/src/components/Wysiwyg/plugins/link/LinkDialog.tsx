@@ -40,7 +40,6 @@ export const LinkDialog: React.FC<LinkDialogProps> = (props) => {
         newsEntries,
         selectedPage,
         selectedNewsEntry,
-        isLoading,
         setUrl,
         setType,
         setTarget,
@@ -100,9 +99,7 @@ export const LinkDialog: React.FC<LinkDialogProps> = (props) => {
                                 {/* Page Tab */}
                                 <TabPanel>
                                     <Box padding={4}>
-                                        {isLoading ? (
-                                            <Loader small>Načítání stránek...</Loader>
-                                        ) : pages.length > 0 ? (
+                                        {pages.length > 0 ? (
                                             <Combobox
                                                 label="Vyberte stránku"
                                                 placeholder="Hledat stránku..."
@@ -131,9 +128,7 @@ export const LinkDialog: React.FC<LinkDialogProps> = (props) => {
                                 {/* News Entry Tab */}
                                 <TabPanel>
                                     <Box padding={4}>
-                                        {isLoading ? (
-                                            <Loader small>Načítání novinek...</Loader>
-                                        ) : newsEntries.length > 0 ? (
+                                        {newsEntries.length > 0 ? (
                                             <Combobox
                                                 label="Vyberte novinku"
                                                 placeholder="Hledat novinku..."

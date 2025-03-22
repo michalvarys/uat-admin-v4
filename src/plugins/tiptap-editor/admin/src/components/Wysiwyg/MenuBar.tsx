@@ -48,6 +48,7 @@ import SvgStack from "@strapi/icons/Stack.js";
 import TabIcon from "@strapi/icons/Blocks.js";
 import TiptapChakraImage from "./plugins/image/TiptapChakraImage";
 import TiptapChakraGallery from "./plugins/gallery/TiptapChakraGallery";
+import CardListButton from "./plugins/card-list/CardListButton";
 
 const onHeadingChange = (editor, type) => {
     switch (type) {
@@ -288,6 +289,7 @@ const MenuBar = ({ editor, debug, setDebug, playground }) => {
                         <LinkButton editor={editor} />
                         {/* <TiptapChakraImage editor={editor} /> */}
                         <TiptapChakraGallery editor={editor} />
+                        <CardListButton editor={editor} />
                         <IconButton
                             icon={<FaChevronDown />}
                             label="Přidat Accordion"

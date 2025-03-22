@@ -40,6 +40,7 @@ import { StackExtension } from "./plugins/stack/StackExtension";
 import { TabsExtension } from "./plugins/tabs/TabsExtension";
 import { ChakraImageExtension } from "./plugins/image/ImageExtension";
 import { GalleryExtension } from "./plugins/gallery/GalleryExtension";
+import { CardList } from "./plugins/card-list/CardListExtension";
 
 export function useCustomEditor(opts) {
   const {
@@ -70,6 +71,7 @@ export function useCustomEditor(opts) {
       BoxExtension,
       HTMLCodeBlockExtension,
       AccordionExtension,
+      CardList,
       DocumentExtension,
       ParagraphExtension,
       TextExtension,

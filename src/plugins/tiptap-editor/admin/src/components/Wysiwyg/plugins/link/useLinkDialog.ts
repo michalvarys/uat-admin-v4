@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { useFetchClient, useNotification } from "@strapi/helper-plugin";
 import { MediaFile, Page, NewsEntry, LinkAttributes } from "./types";
+import usePages from "../../hooks/usePages";
+import useNewsEntries from "../../hooks/useNewsEntries";
 
 interface UseLinkDialogProps {
   isOpen: boolean;
@@ -27,49 +28,12 @@ export const useLinkDialog = ({
   const [activeTab, setActiveTab] = useState(0);
   const [mediaLibVisible, setMediaLibVisible] = useState(false);
   const [selectedFile, setSelectedFile] = useState<MediaFile | null>(null);
-  const [pages, setPages] = useState<Page[]>([]);
-  const [newsEntries, setNewsEntries] = useState<NewsEntry[]>([]);
   const [selectedPage, setSelectedPage] = useState(selectedId);
   const [selectedNewsEntry, setSelectedNewsEntry] = useState(selectedId);
-  const [isLoading, setIsLoading] = useState(false);
-  const toggleNotification = useNotification();
-  const { get } = useFetchClient();
 
-  const fetchPages = async () => {
-    try {
-      setIsLoading(true);
-      const { data } = await get<{ data: Page[] }>(
-        "/api/pages?pagination[pageSize]=1000&populate=*"
-      );
-      setPages(data.data || []);
-      setIsLoading(false);
-    } catch (error) {
-      console.error("Error fetching pages:", error);
-      toggleNotification({
-        type: "warning",
-        message: "Failed to fetch pages",
-      });
-      setIsLoading(false);
-    }
-  };
-
-  const fetchNewsEntries = async () => {
-    try {
-      setIsLoading(true);
-      const { data } = await get<NewsEntry[]>(
-        "/api/news?pagination[pageSize]=1000&populate=*"
-      );
-      setNewsEntries(data);
-      setIsLoading(false);
-    } catch (error) {
-      console.error("Error fetching news entries:", error);
-      toggleNotification({
-        type: "warning",
-        message: "Failed to fetch news entries",
-      });
-      setIsLoading(false);
-    }
-  };
+  // Use the custom hooks for fetching pages and news entries
+  const { pages } = usePages();
+  const { newsEntries } = useNewsEntries();
 
   const handleMediaLibChange = (files: MediaFile[]) => {
     if (files && files.length > 0) {
@@ -116,8 +80,8 @@ export const useLinkDialog = ({
       };
 
       // Add record type and ID based on the link category
-      if (linkCategory === "page" && selectedPage) {
-        attributes.recordType = "page";
+      if (linkCategory === "pages" && selectedPage) {
+        attributes.recordType = "pages";
         attributes.recordId = selectedPage;
       } else if (linkCategory === "news" && selectedNewsEntry) {
         attributes.recordType = "news";
@@ -145,7 +109,7 @@ export const useLinkDialog = ({
       index === 0
         ? "custom"
         : index === 1
-        ? "page"
+        ? "pages"
         : index === 2
         ? "news"
         : "download"
@@ -164,7 +128,7 @@ export const useLinkDialog = ({
       setLinkCategory(initialAttributes.linkCategory || defaultLinkCategory);
 
       // Set active tab based on link category
-      if (initialAttributes.linkCategory === "page") {
+      if (initialAttributes.linkCategory === "pages") {
         setActiveTab(1);
       } else if (initialAttributes.linkCategory === "news") {
         setActiveTab(2);
@@ -173,23 +137,8 @@ export const useLinkDialog = ({
       } else {
         setActiveTab(0);
       }
-
-      // Load data based on the link category
-      if (initialAttributes.linkCategory === "page") {
-        fetchPages();
-      } else if (initialAttributes.linkCategory === "news") {
-        fetchNewsEntries();
-      }
     }
   }, [isOpen, initialAttributes]);
-
-  useEffect(() => {
-    if (linkCategory === "page" && pages.length === 0) {
-      fetchPages();
-    } else if (linkCategory === "news" && newsEntries.length === 0) {
-      fetchNewsEntries();
-    }
-  }, [linkCategory]);
 
   return {
     url,
@@ -203,7 +152,6 @@ export const useLinkDialog = ({
     newsEntries,
     selectedPage,
     selectedNewsEntry,
-    isLoading,
     setUrl,
     setType,
     setTarget,
