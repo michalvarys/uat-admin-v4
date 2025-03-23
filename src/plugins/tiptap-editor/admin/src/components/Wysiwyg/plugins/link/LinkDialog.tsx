@@ -34,18 +34,12 @@ export const LinkDialog: React.FC<LinkDialogProps> = (props) => {
         type,
         target,
         activeTab,
-        mediaLibVisible,
-        selectedFile,
-        pages,
-        newsEntries,
-        recordId,
-        linkCategory,
+        mediaLibrary,
+        recordSelector,
         linkType,
         setUrl,
         setType,
         setTarget,
-        setMediaLibVisible,
-        handleMediaLibChange,
         handlePageChange,
         handleNewsEntryChange,
         handleSave,
@@ -100,17 +94,17 @@ export const LinkDialog: React.FC<LinkDialogProps> = (props) => {
                                 {/* Page Tab */}
                                 <TabPanel>
                                     <Box padding={4}>
-                                        {pages.length > 0 ? (
+                                        {recordSelector.pages.length > 0 ? (
                                             <Combobox
                                                 label="Vyberte stránku"
                                                 placeholder="Hledat stránku..."
-                                                value={recordId}
+                                                value={recordSelector.recordId}
                                                 onChange={handlePageChange}
                                                 textInputProps={{
                                                     placeholder: "Hledat stránku...",
                                                 }}
                                             >
-                                                {pages.map((page) => (
+                                                {recordSelector.pages.map((page) => (
                                                     <ComboboxOption key={page.id} value={page.id.toString()}>
                                                         {page.attributes.title ||
                                                             page.attributes.name ||
@@ -129,17 +123,17 @@ export const LinkDialog: React.FC<LinkDialogProps> = (props) => {
                                 {/* News Entry Tab */}
                                 <TabPanel>
                                     <Box padding={4}>
-                                        {newsEntries.length > 0 ? (
+                                        {recordSelector.newsEntries.length > 0 ? (
                                             <Combobox
                                                 label="Vyberte novinku"
                                                 placeholder="Hledat novinku..."
-                                                value={recordId}
+                                                value={recordSelector.recordId}
                                                 onChange={handleNewsEntryChange}
                                                 textInputProps={{
                                                     placeholder: "Hledat novinku...",
                                                 }}
                                             >
-                                                {newsEntries.map((entry) => (
+                                                {recordSelector.newsEntries.map((entry) => (
                                                     <ComboboxOption key={entry.id} value={entry.id.toString()}>
                                                         {entry.title || `Novinka ${entry.id}`}
                                                     </ComboboxOption>
@@ -156,13 +150,13 @@ export const LinkDialog: React.FC<LinkDialogProps> = (props) => {
                                 {/* Download Link Tab */}
                                 <TabPanel>
                                     <Box padding={4}>
-                                        <Button onClick={() => setMediaLibVisible(true)} fullWidth>
+                                        <Button onClick={() => mediaLibrary.setIsVisible(true)} fullWidth>
                                             Vybrat soubor z knihovny médií
                                         </Button>
-                                        {selectedFile && (
+                                        {mediaLibrary.selectedFile && (
                                             <Box marginTop={4} padding={4} background="neutral150" borderRadius="4px">
                                                 <Typography variant="pi" fontWeight="bold">
-                                                    {selectedFile.alt}
+                                                    {mediaLibrary.selectedFile.alt}
                                                 </Typography>
                                                 <Typography variant="pi">
                                                     {url}
@@ -223,9 +217,9 @@ export const LinkDialog: React.FC<LinkDialogProps> = (props) => {
             </ModalLayout>
 
             <MediaLib
-                isOpen={mediaLibVisible}
-                onChange={handleMediaLibChange}
-                onToggle={() => setMediaLibVisible(!mediaLibVisible)}
+                isOpen={mediaLibrary.isVisible}
+                onChange={mediaLibrary.handleMediaLibChange}
+                onToggle={() => mediaLibrary.setIsVisible(visible => !visible)}
             />
         </>
     );

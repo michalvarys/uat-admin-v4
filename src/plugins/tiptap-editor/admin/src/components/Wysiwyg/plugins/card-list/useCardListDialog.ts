@@ -1,9 +1,13 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useCallback } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { CardItem, CardListAttributes, ColumnsConfig } from "./types";
-import { MediaFile } from "../../plugins/link/types";
-import usePages from "../../hooks/usePages";
-import useNewsEntries from "../../hooks/useNewsEntries";
+import { MediaFile } from "../link/types";
+import useDialog from "../../hooks/useDialog";
+import useRecordSelector, {
+  RECORD_TYPES,
+  RecordType,
+} from "../../hooks/useRecordSelector";
+import useMediaLibrary from "../../hooks/useMediaLibrary";
 
 interface UseCardListDialogProps {
   isOpen: boolean;
@@ -28,190 +32,224 @@ export const useCardListDialog = ({
   onSave,
   onClose,
 }: UseCardListDialogProps) => {
-  const [cards, setCards] = useState<CardItem[]>([]);
-  const [columns, setColumns] = useState<ColumnsConfig>(defaultColumns);
+  // Use shared dialog hook
+  const dialog = useDialog({
+    isOpen,
+    onClose,
+    onSave,
+    initialData: initialAttributes,
+  });
+
+  // State
+  const [cards, setCards] = useState<CardItem[]>(initialAttributes.cards || []);
+  const [columns, setColumns] = useState<ColumnsConfig>(
+    initialAttributes.columns || defaultColumns
+  );
   const [selectedCardIndex, setSelectedCardIndex] = useState<number | null>(
     null
   );
-  const [mediaLibVisible, setMediaLibVisible] = useState(false);
-  const [activeTab, setActiveTab] = useState<"pages" | "news">("pages");
-  const [selectedRecordId, setSelectedRecordId] = useState<string>("");
 
-  // Use the custom hooks for fetching pages and news entries
-  const { pages } = usePages();
-  const { newsEntries } = useNewsEntries();
+  // Use shared record selector hook
+  const recordSelector = useRecordSelector({
+    initialRecordType: RECORD_TYPES.PAGES,
+    initialRecordId: "",
+  });
 
-  const handleMediaLibChange = (files: MediaFile[]) => {
-    if (files && files.length > 0 && selectedCardIndex !== null) {
-      const file = files[0];
-      updateCardAtIndex(selectedCardIndex, { image: file });
-    }
-    setMediaLibVisible(false);
-  };
-
-  const handleRecordChange = (value: string) => {
-    setSelectedRecordId(value);
-
-    if (selectedCardIndex === null) return;
-
-    if (activeTab === "pages") {
-      const selectedPage = pages.find((page) => page.id.toString() === value);
-      if (selectedPage) {
-        updateCardAtIndex(selectedCardIndex, {
-          recordType: "pages",
-          href: `pages:${value}`,
-          recordId: value,
-          title:
-            selectedPage.attributes.title ||
-            selectedPage.attributes.name ||
-            `Page ${selectedPage.id}`,
-        });
+  // Use shared media library hook with a callback to update the selected card
+  const mediaLibrary = useMediaLibrary({
+    onFileSelect: (file: MediaFile) => {
+      if (selectedCardIndex !== null) {
+        updateCardAtIndex(selectedCardIndex, { image: file });
       }
-    } else if (activeTab === "news") {
-      const selectedNews = newsEntries.find(
-        (entry) => entry.id.toString() === value
-      );
+    },
+  });
 
-      if (selectedNews) {
-        updateCardAtIndex(selectedCardIndex, {
-          recordType: "news",
-          href: `news:${value}`,
-          recordId: value,
-          title: selectedNews.title || `News ${selectedNews.id}`,
-        });
-      }
-    }
-  };
+  // Handle columns configuration
+  const handleColumnsChange = useCallback(
+    (breakpoint: keyof typeof breakpoints, value: number | null) => {
+      setColumns((cols) => {
+        const newCols = [...cols];
+        newCols[breakpoints[breakpoint]] = value || null;
+        return newCols;
+      });
+    },
+    []
+  );
 
-  const handleTabChange = (tab: "pages" | "news") => {
-    setActiveTab(tab);
-  };
-
-  const handleColumnsChange = (
-    breakpoint: keyof typeof breakpoints,
-    value: number | null
-  ) => {
-    setColumns((cols) => {
-      const newCols = [...cols];
-      newCols[breakpoints[breakpoint]] = value || null;
-      return newCols;
-    });
-  };
-
-  const addCard = () => {
+  // Card management functions
+  const addCard = useCallback(() => {
     const newCard: CardItem = {
       id: uuidv4(),
       image: null,
-      recordType: activeTab,
+      recordType: recordSelector.recordType,
       href: "",
       recordId: "",
       title: undefined,
     };
 
-    setCards([...cards, newCard]);
+    setCards((prevCards) => [...prevCards, newCard]);
     setSelectedCardIndex(cards.length);
 
     // Reset the selected record
-    setSelectedRecordId("");
-  };
+    recordSelector.setRecordId("");
+  }, [cards.length, recordSelector]);
 
-  const removeCard = (index: number) => {
-    const newCards = [...cards];
-    newCards.splice(index, 1);
-    setCards(newCards);
+  const removeCard = useCallback(
+    (index: number) => {
+      setCards((prevCards) => {
+        const newCards = [...prevCards];
+        newCards.splice(index, 1);
+        return newCards;
+      });
 
-    // If we're removing the selected card, deselect it
-    if (selectedCardIndex === index) {
-      setSelectedCardIndex(null);
-    } else if (selectedCardIndex !== null && selectedCardIndex > index) {
-      // If we're removing a card before the selected card, adjust the selected index
-      setSelectedCardIndex(selectedCardIndex - 1);
-    }
-  };
+      // If we're removing the selected card, deselect it
+      if (selectedCardIndex === index) {
+        setSelectedCardIndex(null);
+      } else if (selectedCardIndex !== null && selectedCardIndex > index) {
+        // If we're removing a card before the selected card, adjust the selected index
+        setSelectedCardIndex(selectedCardIndex - 1);
+      }
+    },
+    [selectedCardIndex]
+  );
 
-  const selectCard = (index: number) => {
-    setSelectedCardIndex(index);
-
-    // Set the active tab and selected record based on the selected card
-    const card = cards[index];
-    if (card) {
-      setActiveTab(card.recordType);
-      setSelectedRecordId(card.recordId.toString());
-    }
-  };
-
-  const updateCardAtIndex = (index: number, updates: Partial<CardItem>) => {
-    const newCards = [...cards];
-    newCards[index] = {
-      ...newCards[index],
-      ...updates,
-    };
-    setCards(newCards);
-  };
-
-  // New functions for sorting cards
-  const moveCardUp = (index: number) => {
-    if (index <= 0) return; // Can't move the first card up
-
-    const newCards = [...cards];
-    const temp = newCards[index];
-    newCards[index] = newCards[index - 1];
-    newCards[index - 1] = temp;
-    setCards(newCards);
-
-    // Update selected card index if needed
-    if (selectedCardIndex === index) {
-      setSelectedCardIndex(index - 1);
-    } else if (selectedCardIndex === index - 1) {
+  const selectCard = useCallback(
+    (index: number) => {
       setSelectedCardIndex(index);
-    }
-  };
 
-  const moveCardDown = (index: number) => {
-    if (index >= cards.length - 1) return; // Can't move the last card down
+      // Set the record type and ID based on the selected card
+      const card = cards[index];
+      if (card) {
+        recordSelector.setRecordType(card.recordType as RecordType);
+        recordSelector.setRecordId(card.recordId.toString());
+      }
+    },
+    [cards, recordSelector]
+  );
 
-    const newCards = [...cards];
-    const temp = newCards[index];
-    newCards[index] = newCards[index + 1];
-    newCards[index + 1] = temp;
-    setCards(newCards);
+  const updateCardAtIndex = useCallback(
+    (index: number, updates: Partial<CardItem>) => {
+      setCards((prevCards) => {
+        const newCards = [...prevCards];
+        newCards[index] = {
+          ...newCards[index],
+          ...updates,
+        };
+        return newCards;
+      });
+    },
+    []
+  );
 
-    // Update selected card index if needed
-    if (selectedCardIndex === index) {
-      setSelectedCardIndex(index + 1);
-    } else if (selectedCardIndex === index + 1) {
-      setSelectedCardIndex(index);
-    }
-  };
+  // Card reordering functions
+  const moveCardUp = useCallback(
+    (index: number) => {
+      if (index <= 0) return; // Can't move the first card up
 
+      setCards((prevCards) => {
+        const newCards = [...prevCards];
+        const temp = newCards[index];
+        newCards[index] = newCards[index - 1];
+        newCards[index - 1] = temp;
+        return newCards;
+      });
+
+      // Update selected card index if needed
+      if (selectedCardIndex === index) {
+        setSelectedCardIndex(index - 1);
+      } else if (selectedCardIndex === index - 1) {
+        setSelectedCardIndex(index);
+      }
+    },
+    [selectedCardIndex]
+  );
+
+  const moveCardDown = useCallback(
+    (index: number) => {
+      if (index >= cards.length - 1) return; // Can't move the last card down
+
+      setCards((prevCards) => {
+        const newCards = [...prevCards];
+        const temp = newCards[index];
+        newCards[index] = newCards[index + 1];
+        newCards[index + 1] = temp;
+        return newCards;
+      });
+
+      // Update selected card index if needed
+      if (selectedCardIndex === index) {
+        setSelectedCardIndex(index + 1);
+      } else if (selectedCardIndex === index + 1) {
+        setSelectedCardIndex(index);
+      }
+    },
+    [cards.length, selectedCardIndex]
+  );
+
+  // Custom record change handler for card list
+  const handleRecordChange = useCallback(
+    (value: string) => {
+      recordSelector.handleRecordChange(value);
+
+      if (selectedCardIndex === null) return;
+
+      const recordType = recordSelector.recordType;
+      const selectedRecord =
+        recordType === RECORD_TYPES.PAGES
+          ? recordSelector.pages.find((page) => page.id.toString() === value)
+          : recordSelector.newsEntries.find(
+              (entry) => entry.id.toString() === value
+            );
+
+      if (selectedRecord) {
+        const title =
+          recordType === RECORD_TYPES.PAGES
+            ? (selectedRecord as any).attributes?.title ||
+              (selectedRecord as any).attributes?.name ||
+              `Page ${(selectedRecord as any).id}`
+            : (selectedRecord as any).title ||
+              `News ${(selectedRecord as any).id}`;
+
+        updateCardAtIndex(selectedCardIndex, {
+          recordType,
+          recordId: value,
+          href: `${recordType}:${value}`,
+          title,
+        });
+      }
+    },
+    [recordSelector, selectedCardIndex, updateCardAtIndex]
+  );
+
+  // Handle tab change (record type change)
+  const handleTabChange = useCallback(
+    (index: number) => {
+      // Convert to number to ensure it's a proper index
+      const tabIndex = Number(index);
+      const newRecordType =
+        tabIndex === 0 ? RECORD_TYPES.PAGES : RECORD_TYPES.NEWS;
+      recordSelector.handleRecordTypeChange(newRecordType);
+    },
+    [recordSelector]
+  );
+
+  // Save handler
   const handleSave = useCallback(() => {
-    onSave({ cards, columns });
-    onClose();
-  }, [cards, columns, onSave, onClose]);
-
-  const ref = useRef<Boolean>(false);
-
-  // Initialize the dialog when it opens
-  useEffect(() => {
-    if (isOpen && !ref.current) {
-      setCards(initialAttributes.cards || []);
-      setColumns(initialAttributes.columns || defaultColumns);
-      setSelectedCardIndex(null);
-      ref.current = true;
-    }
-  }, [isOpen, initialAttributes]);
+    dialog.handleSave({ cards, columns });
+  }, [cards, columns, dialog]);
 
   return {
+    // State
+    activeTab: recordSelector.recordType === RECORD_TYPES.PAGES ? 0 : 1,
     cards,
     columns,
     selectedCardIndex,
-    mediaLibVisible,
-    pages,
-    newsEntries,
-    activeTab,
-    selectedRecordId,
-    setMediaLibVisible,
-    handleMediaLibChange,
+    recordSelector,
+
+    // From media library
+    mediaLibrary,
+
+    // Card list specific handlers
     handleRecordChange,
     handleTabChange,
     handleColumnsChange,
@@ -220,8 +258,10 @@ export const useCardListDialog = ({
     selectCard,
     moveCardUp,
     moveCardDown,
+
+    // Dialog handlers
     handleSave,
-    onClose,
+    onClose: dialog.onClose,
   };
 };
 

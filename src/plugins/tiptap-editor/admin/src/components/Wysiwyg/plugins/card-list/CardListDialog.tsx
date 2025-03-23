@@ -37,13 +37,9 @@ export const CardListDialog: React.FC<CardListDialogProps> = (props) => {
         cards,
         columns,
         selectedCardIndex,
-        mediaLibVisible,
-        pages,
-        newsEntries,
         activeTab,
-        selectedRecordId,
-        setMediaLibVisible,
-        handleMediaLibChange,
+        recordSelector,
+        mediaLibrary,
         handleRecordChange,
         handleTabChange,
         handleColumnsChange,
@@ -207,7 +203,7 @@ export const CardListDialog: React.FC<CardListDialogProps> = (props) => {
                                                 Náhledový obrázek
                                             </Typography>
                                             <Box paddingTop={2}>
-                                                <Button onClick={() => setMediaLibVisible(true)} fullWidth>
+                                                <Button onClick={() => mediaLibrary.setIsVisible(true)} fullWidth>
                                                     {cards[selectedCardIndex].image
                                                         ? "Změnit obrázek"
                                                         : "Vybrat obrázek z knihovny médií"}
@@ -236,8 +232,8 @@ export const CardListDialog: React.FC<CardListDialogProps> = (props) => {
                                             <TabGroup
                                                 label="Card link options"
                                                 id="card-tabs"
-                                                onTabChange={(index) => handleTabChange(index === 0 ? "pages" : "news")}
-                                                selectedTabIndex={activeTab === "pages" ? 0 : 1}
+                                                onTabChange={(index) => handleTabChange(index)}
+                                                selectedTabIndex={activeTab}
                                             >
                                                 <Tabs>
                                                     <Tab>Stránka</Tab>
@@ -247,17 +243,17 @@ export const CardListDialog: React.FC<CardListDialogProps> = (props) => {
                                                     {/* Page Tab */}
                                                     <TabPanel>
                                                         <Box padding={4}>
-                                                            {pages.length > 0 ? (
+                                                            {recordSelector.pages.length > 0 ? (
                                                                 <Combobox
                                                                     label="Vyberte stránku"
                                                                     placeholder="Hledat stránku..."
-                                                                    value={selectedRecordId}
+                                                                    value={recordSelector.recordId}
                                                                     onChange={handleRecordChange}
                                                                     textInputProps={{
                                                                         placeholder: "Hledat stránku...",
                                                                     }}
                                                                 >
-                                                                    {pages.map((page) => (
+                                                                    {recordSelector.pages.map((page) => (
                                                                         <ComboboxOption key={page.id} value={page.id.toString()}>
                                                                             {page.attributes.title ||
                                                                                 page.attributes.name ||
@@ -276,17 +272,17 @@ export const CardListDialog: React.FC<CardListDialogProps> = (props) => {
                                                     {/* News Entry Tab */}
                                                     <TabPanel>
                                                         <Box padding={4}>
-                                                            {newsEntries.length > 0 ? (
+                                                            {recordSelector.newsEntries.length > 0 ? (
                                                                 <Combobox
                                                                     label="Vyberte novinku"
                                                                     placeholder="Hledat novinku..."
-                                                                    value={selectedRecordId}
+                                                                    value={recordSelector.recordId}
                                                                     onChange={handleRecordChange}
                                                                     textInputProps={{
                                                                         placeholder: "Hledat novinku...",
                                                                     }}
                                                                 >
-                                                                    {newsEntries.map((entry) => (
+                                                                    {recordSelector.newsEntries.map((entry) => (
                                                                         <ComboboxOption key={entry.id} value={entry.id.toString()}>
                                                                             {entry.title || `Novinka ${entry.id}`}
                                                                         </ComboboxOption>
@@ -324,10 +320,11 @@ export const CardListDialog: React.FC<CardListDialogProps> = (props) => {
                     </Box>
                 </Box>
             </ModalLayout>
+
             <MediaLib
-                isOpen={mediaLibVisible}
-                onChange={handleMediaLibChange}
-                onToggle={() => setMediaLibVisible(visibility => !visibility)}
+                isOpen={mediaLibrary.isVisible}
+                onChange={mediaLibrary.handleMediaLibChange}
+                onToggle={() => mediaLibrary.setIsVisible(visibility => !visibility)}
             />
         </>
     );

@@ -1,7 +1,11 @@
 import { useState, useEffect, useCallback } from "react";
-import { MediaFile, LinkAttributes } from "./types";
-import usePages from "../../hooks/usePages";
-import useNewsEntries from "../../hooks/useNewsEntries";
+import { LinkAttributes } from "./types";
+import useDialog from "../../hooks/useDialog";
+import useRecordSelector, {
+  RECORD_TYPES,
+  RecordType,
+} from "../../hooks/useRecordSelector";
+import useMediaLibrary from "../../hooks/useMediaLibrary";
 
 interface UseLinkDialogProps {
   isOpen: boolean;
@@ -13,8 +17,8 @@ interface UseLinkDialogProps {
 // Constants
 export const LINK_TYPES = {
   CUSTOM: "custom",
-  PAGES: "pages",
-  NEWS: "news",
+  PAGES: RECORD_TYPES.PAGES,
+  NEWS: RECORD_TYPES.NEWS,
   DOWNLOAD: "download",
 };
 
@@ -46,6 +50,14 @@ export const useLinkDialog = ({
   onSave,
   onClose,
 }: UseLinkDialogProps) => {
+  // Use shared dialog hook
+  const dialog = useDialog({
+    isOpen,
+    onClose,
+    onSave,
+    initialData: initialAttributes,
+  });
+
   // State
   const [url, setUrl] = useState("");
   const [type, setType] = useState(defaultType);
@@ -53,58 +65,16 @@ export const useLinkDialog = ({
   const [linkCategory, setLinkCategory] =
     useState<LinkType>(defaultLinkCategory);
   const [activeTab, setActiveTab] = useState<TabIndex>(TAB_INDICES.CUSTOM);
-  const [mediaLibVisible, setMediaLibVisible] = useState(false);
-  const [selectedFile, setSelectedFile] = useState<MediaFile | null>(null);
-  const [recordId, setRecordId] = useState("");
 
-  // Data hooks
-  const { pages } = usePages();
-  const { newsEntries } = useNewsEntries();
+  // Use shared record selector hook
+  const recordSelector = useRecordSelector();
 
-  // Reset form to default values
-  const resetForm = useCallback(() => {
-    setUrl("");
-    setType(defaultType);
-    setTarget(defaultTarget);
-    setLinkCategory(defaultLinkCategory);
-    setSelectedFile(null);
-    setRecordId("");
-  }, []);
-
-  // Event handlers - memoized with useCallback for better performance
-  const handleMediaLibChange = useCallback((files: MediaFile[]) => {
-    if (files && files.length > 0) {
-      const file = files[0];
-      setSelectedFile(file);
+  // Use shared media library hook
+  const mediaLibrary = useMediaLibrary({
+    onFileSelect: (file) => {
       setUrl(file.url);
-    }
-    setMediaLibVisible(false);
-  }, []);
-
-  const handleRecordChange = useCallback(
-    (value: string, category: LinkType) => {
-      setRecordId(value);
-      if (value) {
-        setUrl(`${category}:${value}`);
-      }
     },
-    []
-  );
-
-  // Convenience handlers for specific record types
-  const handlePageChange = useCallback(
-    (value: string) => {
-      handleRecordChange(value, LINK_TYPES.PAGES);
-    },
-    [handleRecordChange]
-  );
-
-  const handleNewsEntryChange = useCallback(
-    (value: string) => {
-      handleRecordChange(value, LINK_TYPES.NEWS);
-    },
-    [handleRecordChange]
-  );
+  });
 
   // Map tab index to link category
   const getCategoryFromTabIndex = useCallback((index: number): LinkType => {
@@ -121,10 +91,16 @@ export const useLinkDialog = ({
     }
   }, []);
 
+  // Handle tab change - this function is called by the TabGroup component
+  // The index parameter is the tab index (0-based)
   const handleTabChange = useCallback(
     (index: number) => {
-      setActiveTab(index as TabIndex);
-      const category = getCategoryFromTabIndex(index);
+      // Convert to TabIndex type for our internal state
+      const tabIndex = Number(index) as TabIndex;
+      setActiveTab(tabIndex);
+
+      // Get the corresponding link category
+      const category = getCategoryFromTabIndex(tabIndex);
       setLinkCategory(category);
 
       // If DOWNLOAD is selected, automatically set type to "button" and target to "_blank"
@@ -135,10 +111,40 @@ export const useLinkDialog = ({
 
       // Reset selection state when changing tabs
       setUrl("");
-      setRecordId("");
-      setSelectedFile(null);
+      recordSelector.setRecordId("");
+      mediaLibrary.setSelectedFile(null);
+
+      // Update record selector type if changing to a record-based tab
+      if (category === LINK_TYPES.PAGES) {
+        recordSelector.setRecordType(RECORD_TYPES.PAGES);
+      } else if (category === LINK_TYPES.NEWS) {
+        recordSelector.setRecordType(RECORD_TYPES.NEWS);
+      }
     },
-    [getCategoryFromTabIndex]
+    [
+      getCategoryFromTabIndex,
+      recordSelector,
+      mediaLibrary,
+      setType,
+      setTarget,
+      setUrl,
+    ]
+  );
+
+  // Custom URL setter that handles record selection
+  const handleUrlChange = useCallback((newUrl: string) => {
+    setUrl(newUrl);
+  }, []);
+
+  // Handle record selection
+  const handleRecordChange = useCallback(
+    (value: string) => {
+      recordSelector.handleRecordChange(value);
+      if (value) {
+        setUrl(`${recordSelector.recordType}:${value}`);
+      }
+    },
+    [recordSelector]
   );
 
   const handleSave = useCallback(() => {
@@ -152,45 +158,38 @@ export const useLinkDialog = ({
       target,
       rel: "",
       download:
-        linkCategory === LINK_TYPES.DOWNLOAD ? selectedFile?.alt || true : null,
+        linkCategory === LINK_TYPES.DOWNLOAD
+          ? mediaLibrary.selectedFile?.alt || true
+          : null,
     };
 
     // Add record type and ID based on the link category
     if (
       (linkCategory === LINK_TYPES.PAGES || linkCategory === LINK_TYPES.NEWS) &&
-      recordId
+      recordSelector.recordId
     ) {
       attributes.recordType = linkCategory;
-      attributes.recordId = recordId;
+      attributes.recordId = recordSelector.recordId;
     }
 
-    onSave(attributes);
-    resetForm();
+    dialog.handleSave(attributes);
+
+    // Reset form
+    setUrl("");
+    setType(defaultType);
+    setTarget(defaultTarget);
+    setLinkCategory(defaultLinkCategory);
+    mediaLibrary.setSelectedFile(null);
+    recordSelector.setRecordId("");
   }, [
     url,
     type,
     linkCategory,
     target,
-    selectedFile,
-    recordId,
-    onSave,
-    resetForm,
+    recordSelector,
+    mediaLibrary.selectedFile,
+    dialog,
   ]);
-
-  // Extract ID from href format "type:id"
-  const extractIdFromHref = useCallback(
-    (href: string | undefined, prefix: string): string => {
-      if (!href) return "";
-
-      const parts = href.split(":");
-      if (parts.length === 2 && parts[0] === prefix) {
-        return parts[1] || "";
-      }
-
-      return "";
-    },
-    []
-  );
 
   // Initialize form when dialog opens
   useEffect(() => {
@@ -208,26 +207,34 @@ export const useLinkDialog = ({
     switch (category) {
       case LINK_TYPES.PAGES:
         setActiveTab(TAB_INDICES.PAGES as TabIndex);
+        recordSelector.setRecordType(RECORD_TYPES.PAGES);
 
         // Set selected record from recordId or extract from href
         if (initialAttributes.recordId) {
-          setRecordId(initialAttributes.recordId.toString());
+          recordSelector.setRecordId(initialAttributes.recordId.toString());
         } else {
-          setRecordId(
-            extractIdFromHref(initialAttributes.href, LINK_TYPES.PAGES)
+          recordSelector.setRecordId(
+            recordSelector.extractIdFromHref(
+              initialAttributes.href,
+              LINK_TYPES.PAGES
+            )
           );
         }
         break;
 
       case LINK_TYPES.NEWS:
         setActiveTab(TAB_INDICES.NEWS as TabIndex);
+        recordSelector.setRecordType(RECORD_TYPES.NEWS);
 
         // Set selected record from recordId or extract from href
         if (initialAttributes.recordId) {
-          setRecordId(initialAttributes.recordId.toString());
+          recordSelector.setRecordId(initialAttributes.recordId.toString());
         } else {
-          setRecordId(
-            extractIdFromHref(initialAttributes.href, LINK_TYPES.NEWS)
+          recordSelector.setRecordId(
+            recordSelector.extractIdFromHref(
+              initialAttributes.href,
+              LINK_TYPES.NEWS
+            )
           );
         }
         break;
@@ -244,7 +251,7 @@ export const useLinkDialog = ({
         setActiveTab(TAB_INDICES.CUSTOM as TabIndex);
         break;
     }
-  }, [isOpen, initialAttributes, extractIdFromHref]);
+  }, [isOpen, initialAttributes]);
 
   return {
     // State
@@ -253,27 +260,25 @@ export const useLinkDialog = ({
     target,
     linkCategory,
     activeTab,
-    mediaLibVisible,
-    selectedFile,
-    pages,
-    newsEntries,
-    recordId,
     linkType: TAB_LINKS[activeTab],
 
+    // From record selector
+    recordSelector,
+
+    // From media library
+    mediaLibrary,
+
     // Setters
-    setUrl,
+    setUrl: handleUrlChange,
     setType,
     setTarget,
-    setMediaLibVisible,
-    setRecordId,
 
     // Event handlers
-    handleMediaLibChange,
-    handlePageChange,
-    handleNewsEntryChange,
+    handlePageChange: handleRecordChange,
+    handleNewsEntryChange: handleRecordChange,
     handleSave,
     handleTabChange,
-    onClose,
+    onClose: dialog.onClose,
   };
 };
 
