@@ -7,7 +7,6 @@ import CardListComponent from "./CardListComponent";
 export interface CardListOptions {
   HTMLAttributes: Record<string, any>;
 }
-
 declare module "@tiptap/core" {
   interface Commands<ReturnType> {
     cardList: {

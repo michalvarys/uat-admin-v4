@@ -1,3 +1,4 @@
+import { mergeAttributes } from "@tiptap/core";
 import LinkExtension from "@tiptap/extension-link";
 
 export const CustomLink = LinkExtension.extend({
@@ -91,6 +92,48 @@ export const CustomLink = LinkExtension.extend({
         },
       },
     };
+  },
+
+  parseHTML() {
+    return [
+      {
+        tag: 'a[data-type="custom-link"]',
+        getAttrs: (element) => {
+          if (!(element instanceof HTMLElement)) return false;
+          const recordType = element.getAttribute("data-record-type");
+          const recordId = element.getAttribute("data-record-id");
+          const type = element.getAttribute("data-link-type");
+          const href = element.getAttribute("href");
+          const rel = element.getAttribute("rel");
+          const target = element.getAttribute("target");
+          const linkCategory = element.getAttribute("data-link-category");
+          const className = element.getAttribute("class");
+          return {
+            class: className,
+            linkCategory,
+            recordType,
+            recordId,
+            href,
+            type,
+            rel,
+            target,
+          };
+        },
+      },
+    ];
+  },
+
+  renderHTML({ HTMLAttributes, mark }) {
+    return [
+      "a",
+      mergeAttributes(this.options.HTMLAttributes, HTMLAttributes, {
+        "data-type": "custom-link",
+        "data-link-type": mark.attrs.type,
+        "data-link-category": mark.attrs.linkCategory,
+        "data-record-type": mark.attrs.recordType,
+        "data-record-id": mark.attrs.recordId,
+      }),
+    ];
   },
 });
 
