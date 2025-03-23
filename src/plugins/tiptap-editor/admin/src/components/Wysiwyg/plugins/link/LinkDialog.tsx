@@ -18,7 +18,7 @@ import {
     Radio,
 } from "@strapi/design-system";
 import { LinkAttributes } from "./types";
-import { useLinkDialog } from "./useLinkDialog";
+import { LINK_TYPES, useLinkDialog } from "./useLinkDialog";
 import MediaLib from "../../../MediaLib";
 
 interface LinkDialogProps {
@@ -38,8 +38,9 @@ export const LinkDialog: React.FC<LinkDialogProps> = (props) => {
         selectedFile,
         pages,
         newsEntries,
-        selectedPage,
-        selectedNewsEntry,
+        recordId,
+        linkCategory,
+        linkType,
         setUrl,
         setType,
         setTarget,
@@ -59,8 +60,8 @@ export const LinkDialog: React.FC<LinkDialogProps> = (props) => {
     return (
         <>
             <ModalLayout
-                onClose={onClose}
                 labelledBy="link-dialog-title"
+                key={url}
             >
                 <Box padding={8} background="neutral100">
                     <Box paddingBottom={4} borderBottom="1px solid">
@@ -80,7 +81,7 @@ export const LinkDialog: React.FC<LinkDialogProps> = (props) => {
                                 <Tab>Vlastní odkaz</Tab>
                                 <Tab>Stránka</Tab>
                                 <Tab>Novinka</Tab>
-                                {/* <Tab>Soubor ke stažení</Tab> */}
+                                <Tab>Soubor ke stažení</Tab>
                             </Tabs>
                             <TabPanels>
                                 {/* Custom Link Tab */}
@@ -103,7 +104,7 @@ export const LinkDialog: React.FC<LinkDialogProps> = (props) => {
                                             <Combobox
                                                 label="Vyberte stránku"
                                                 placeholder="Hledat stránku..."
-                                                value={selectedPage}
+                                                value={recordId}
                                                 onChange={handlePageChange}
                                                 textInputProps={{
                                                     placeholder: "Hledat stránku...",
@@ -132,7 +133,7 @@ export const LinkDialog: React.FC<LinkDialogProps> = (props) => {
                                             <Combobox
                                                 label="Vyberte novinku"
                                                 placeholder="Hledat novinku..."
-                                                value={selectedNewsEntry}
+                                                value={recordId}
                                                 onChange={handleNewsEntryChange}
                                                 textInputProps={{
                                                     placeholder: "Hledat novinku...",
@@ -184,7 +185,9 @@ export const LinkDialog: React.FC<LinkDialogProps> = (props) => {
                                     name="linkType"
                                 >
                                     <Stack spacing={2}>
-                                        <Radio value="link">Odkaz</Radio>
+                                        {linkType !== LINK_TYPES.DOWNLOAD && (
+                                            <Radio value="link">Odkaz</Radio>
+                                        )}
                                         <Radio value="button">Tlačítko</Radio>
                                     </Stack>
                                 </RadioGroup>
@@ -198,7 +201,9 @@ export const LinkDialog: React.FC<LinkDialogProps> = (props) => {
                                     name="linkTarget"
                                 >
                                     <Stack spacing={2}>
-                                        <Radio value="_self">Stejná stránka</Radio>
+                                        {linkType !== LINK_TYPES.DOWNLOAD && (
+                                            <Radio value="_self">Stejná stránka</Radio>
+                                        )}
                                         <Radio value="_blank">Nová stránka</Radio>
                                     </Stack>
                                 </RadioGroup>
