@@ -1,12 +1,10 @@
 import React from "react";
 import { NodeViewWrapper, NodeViewProps } from "@tiptap/react";
-import {
-    Box,
-    IconButton,
-} from "@chakra-ui/react";
+import { IconButton } from "@chakra-ui/react";
 import { EditIcon } from "@chakra-ui/icons";
 import { GalleryView, GalleryAttributes } from "@ssupat/components";
 import { useGalleryDialog } from "./useGalleryDialog";
+import { WrapperComponent } from "../../Wrapper";
 
 interface GalleryComponentProps extends NodeViewProps {
     editable?: boolean;
@@ -16,6 +14,8 @@ export const GalleryComponent = ({
     node,
     editor,
     editable = true,
+    selected,
+    getPos
 }: GalleryComponentProps) => {
     const attrs: GalleryAttributes = {
         images: node.attrs.images || [],
@@ -24,11 +24,22 @@ export const GalleryComponent = ({
         aspectRatio: node.attrs.aspectRatio || "1",
     };
 
+    const handleClick = () => {
+        if (typeof getPos === "function") {
+            editor.commands.setNodeSelection(getPos());
+        }
+    };
+
     const { onOpen: openEdit } = useGalleryDialog();
 
     return (
-        <NodeViewWrapper>
-            <Box position="relative">
+        <NodeViewWrapper
+            as="div"
+            className="gallery-block"
+            onClick={handleClick}
+            data-selected={selected}
+        >
+            <WrapperComponent selected={selected}>
                 {editable && (
                     <IconButton
                         aria-label="Upravit galerii"
@@ -42,7 +53,7 @@ export const GalleryComponent = ({
                     />
                 )}
                 <GalleryView attrs={attrs} />
-            </Box>
+            </WrapperComponent>
         </NodeViewWrapper>
     );
 };

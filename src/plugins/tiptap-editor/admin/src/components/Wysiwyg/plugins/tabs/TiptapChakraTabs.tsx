@@ -7,12 +7,6 @@ import {
     Box,
     TabPanel,
     Button,
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalBody,
-    ModalCloseButton,
     useDisclosure,
     Input,
     IconButton,
@@ -21,13 +15,8 @@ import {
     Dialog,
     DialogBody,
     DialogFooter,
-    Grid,
-    NumberInput,
-    Select,
-    Option,
-    TextInput,
-    TabGroup,
 } from "@strapi/design-system";
+
 import styled from "styled-components";
 import { EditorContent } from "@tiptap/react";
 import { useCustomEditor } from "../../editor";
@@ -100,6 +89,13 @@ export default function TiptapChakraTabs({
     };
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
+        // The input blurs when i hit space, to work around it we need to prevent the event defaults and add the space manually 
+        if (e.key === " ") {
+            e.preventDefault()
+            // @ts-ignore
+            e.target.value += ' ';
+        }
+
         if (e.key === "Enter") {
             setEditingIndex(null);
         }
@@ -127,6 +123,7 @@ export default function TiptapChakraTabs({
 
     // Aktualizujte editor, když se změní aktuální záložka
     useEffect(() => {
+        console.log("useEffect")
         resetContent();
     }, [currentTab, editor]);
 
@@ -135,9 +132,6 @@ export default function TiptapChakraTabs({
             <Tabs
                 // TODO sjednotit web a admin přes @ssupat/components knihovnu
                 variant="solid-rounded"
-                border="1px solid"
-                borderColor="gray.100"
-                borderRadius="md"
                 py={4}
                 mt={4}
                 index={currentTab}
@@ -217,7 +211,6 @@ export default function TiptapChakraTabs({
             </Tabs>
 
             <StyledDialog
-                onClose={onClose}
                 title="Nastavení záložky"
                 isOpen={isOpen}
                 style={{

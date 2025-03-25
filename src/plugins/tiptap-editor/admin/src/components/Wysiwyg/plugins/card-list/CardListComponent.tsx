@@ -3,6 +3,7 @@ import { NodeViewProps, NodeViewWrapper } from "@tiptap/react";
 import { Box, Typography, Card } from "@strapi/design-system";
 import { SimpleGrid } from '@chakra-ui/react'
 import { CardItem, ColumnsConfig } from "./types";
+import { WrapperComponent } from "../../Wrapper";
 
 const CardListComponent: React.FC<NodeViewProps> = ({
     node,
@@ -26,14 +27,7 @@ const CardListComponent: React.FC<NodeViewProps> = ({
             onClick={handleClick}
             data-selected={selected}
         >
-            <Box
-                padding={4}
-                background={selected ? "primary100" : "neutral100"}
-                borderColor={selected ? "primary600" : "neutral300"}
-                borderRadius="4px"
-                borderStyle="dashed"
-                borderWidth="1px"
-            >
+            <WrapperComponent selected={selected}>
                 <Box paddingBottom={2}>
                     <Typography variant="delta">Seznam karet</Typography>
                 </Box>
@@ -78,7 +72,7 @@ const CardListComponent: React.FC<NodeViewProps> = ({
                         ))}
                     </SimpleGrid>
                 )}
-            </Box>
+            </WrapperComponent>
         </NodeViewWrapper>
     );
 };

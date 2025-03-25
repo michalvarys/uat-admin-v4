@@ -10,6 +10,7 @@ import {
   Flex,
 } from '@chakra-ui/react'
 import { AccordionIcon } from '@chakra-ui/icons'
+import { WrapperComponent } from '../../Wrapper'
 
 type AccordionComponentProps = NodeViewProps & {
   node: {
@@ -25,6 +26,9 @@ export const AccordionComponent: React.ComponentType<AccordionComponentProps> = 
     attrs: { title },
   },
   updateAttributes,
+  selected,
+  getPos,
+  editor
 }) => {
   const [isEditing, setIsEditing] = useState(false)
   const [titleValue, setTitleValue] = useState(title)
@@ -54,9 +58,20 @@ export const AccordionComponent: React.ComponentType<AccordionComponentProps> = 
     }
   }
 
+  const handleClick = () => {
+    if (typeof getPos === "function") {
+      editor.commands.setNodeSelection(getPos());
+    }
+  };
+
   return (
-    <NodeViewWrapper>
-      <Box my={4}>
+    <NodeViewWrapper
+      as="div"
+      className="gallery-block"
+      onClick={handleClick}
+      data-selected={selected}
+    >
+      <WrapperComponent selected={selected}>
         <Accordion allowToggle>
           <AccordionItem>
             <AccordionButton p={4}>
@@ -100,7 +115,7 @@ export const AccordionComponent: React.ComponentType<AccordionComponentProps> = 
             </AccordionPanel>
           </AccordionItem>
         </Accordion>
-      </Box>
+      </WrapperComponent>
     </NodeViewWrapper>
   )
 }

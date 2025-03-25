@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { NodeViewWrapper, NodeViewProps } from '@tiptap/react';
-import { Tabs, TabList, Tab, TabPanels, TabPanel, Box, Input, Flex } from '@chakra-ui/react';
+import { Box } from "@strapi/design-system";
 import TiptapChakraTabs from './TiptapChakraTabs';
 import { TabType } from './TabsExtension';
+import { WrapperComponent } from '../../Wrapper';
 
 interface TabsComponentProps {
     node: {
@@ -18,13 +19,26 @@ export const TabsComponent: React.FC<NodeViewProps & TabsComponentProps> = ({
         attrs: { tabs },
     },
     updateAttributes,
-    editor
+    getPos,
+    editor,
+    selected
 }) => {
+    const handleClick = () => {
+        if (typeof getPos === "function") {
+            editor.commands.setNodeSelection(getPos());
+        }
+    };
+
     return (
-        <NodeViewWrapper>
-            <Box my={4}>
+        <NodeViewWrapper
+            as="div"
+            className="tabs-component"
+            data-selected={selected}
+            onClick={handleClick}
+        >
+            <WrapperComponent selected={selected}>
                 <TiptapChakraTabs tabs={tabs} setTabs={(tabs) => updateAttributes({ tabs })} />
-            </Box>
+            </WrapperComponent>
         </NodeViewWrapper>
     );
 };

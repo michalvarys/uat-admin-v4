@@ -18,6 +18,7 @@ import {
 } from '@chakra-ui/react'
 import { EditIcon, DragHandleIcon, ViewIcon } from '@chakra-ui/icons'
 import { HTMLCodeBlockView } from '@ssupat/components'
+import { WrapperComponent } from '../../Wrapper'
 
 interface HTMLCodeBlockComponentProps {
   node: {
@@ -35,6 +36,8 @@ export const HTMLCodeBlockComponent: React.ComponentType<NodeViewProps> = ({
   },
   updateAttributes,
   selected,
+  editor,
+  getPos
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [currentHTML, setCurrentHTML] = useState(htmlContent)
@@ -45,14 +48,21 @@ export const HTMLCodeBlockComponent: React.ComponentType<NodeViewProps> = ({
     onClose()
   }
 
+  const handleClick = () => {
+    if (typeof getPos === "function") {
+      editor.commands.setNodeSelection(getPos());
+    }
+  };
+
+
   return (
-    <NodeViewWrapper>
-      <Box
-        border="1px dashed"
-        borderColor={selected ? "blue.400" : "gray.200"}
-        p={4}
-        my={2}
-      >
+    <NodeViewWrapper
+      as="div"
+      className="html-code-block"
+      onClick={handleClick}
+      data-selected={selected}
+    >
+      <WrapperComponent selected={selected}>
         <Grid templateColumns="1fr auto" gap={4} alignItems="start">
           {/* Content Column */}
           <GridItem>
@@ -118,7 +128,7 @@ export const HTMLCodeBlockComponent: React.ComponentType<NodeViewProps> = ({
             </ModalFooter>
           </ModalContent>
         </Modal>
-      </Box>
+      </WrapperComponent>
     </NodeViewWrapper>
   )
 }
