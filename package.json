@@ -16,7 +16,7 @@
     "types": "npm run strapi ts:generate-types --debug"
   },
   "dependencies": {
-    "@ssupat/components": "^0.0.23",
+    "@ssupat/components": "^0.0.28",
     "@ssupat/tiptap-editor": "0.0.13",
     "@strapi/plugin-cloud": "4.25.13",
     "@strapi/plugin-i18n": "4.25.13",
