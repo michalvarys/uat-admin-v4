@@ -97,7 +97,7 @@ export const CustomLink = LinkExtension.extend({
   parseHTML() {
     return [
       {
-        tag: 'a[data-type="custom-link"]',
+        tag: "a",
         getAttrs: (element) => {
           if (!(element instanceof HTMLElement)) return false;
           const recordType = element.getAttribute("data-record-type");

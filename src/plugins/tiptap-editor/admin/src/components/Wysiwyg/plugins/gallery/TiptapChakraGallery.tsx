@@ -26,6 +26,7 @@ export default function TiptapChakraGallery({ editor }: TiptapChakraGalleryProps
                     editor.chain().focus();
                     onOpen();
                 }}
+                title="Přidat galerii"
                 size="sm"
                 className={isEditing ? "is-active" : ""}
             />

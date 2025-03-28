@@ -286,6 +286,15 @@ const MenuBar = ({ editor, debug, setDebug, playground }) => {
 
                     {/* Custom */}
                     <IconButtonGroup>
+                        {/* <IconButton
+                            icon={<LinkIcon />}
+                            label="Starý odkaz"
+                            className={[
+                                "large-icon",
+                                editor.isActive("link") ? "is-active" : ""
+                            ]}
+                            onClick={openLinkDialog}
+                        /> */}
                         <LinkButton editor={editor} />
                         {/* <TiptapChakraImage editor={editor} /> */}
                         <TiptapChakraGallery editor={editor} />
@@ -375,7 +384,7 @@ const MenuBar = ({ editor, debug, setDebug, playground }) => {
                 <DialogBody>
                     <Stack spacing={2}>
                         <TextInput
-                            label="Link URL"
+                            label="URL"
                             placeholder="Write or paste the url here"
                             name="url"
                             onChange={(e) => setLinkInput(e.target.value)}
@@ -384,7 +393,7 @@ const MenuBar = ({ editor, debug, setDebug, playground }) => {
                         />
                         <Select
                             id="linkTargetSelect"
-                            label="Link target"
+                            label="target"
                             required
                             placeholder="Select link target"
                             value={linkTargetInput}
@@ -407,12 +416,12 @@ const MenuBar = ({ editor, debug, setDebug, playground }) => {
                             }}
                             variant="tertiary"
                         >
-                            Cancel
+                            Zrušit
                         </Button>
                     }
                     endAction={
                         <Button onClick={() => onInsertLink()} variant="success-light">
-                            Insert link
+                            vložit odkaz
                         </Button>
                     }
                 />

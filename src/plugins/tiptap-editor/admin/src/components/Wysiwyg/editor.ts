@@ -31,6 +31,7 @@ import CodeBlockExtension from "@tiptap/extension-code-block";
 import HardBreakExtension from "@tiptap/extension-hard-break";
 import HighlightExtension from "@tiptap/extension-highlight";
 import HorizontalRuleExtension from "@tiptap/extension-horizontal-rule";
+import LinkExtension from "@tiptap/extension-link";
 import CharacterCounter from "./CharacterCounter";
 import { CustomLink } from "./plugins/link";
 import { AccordionExtension } from "./plugins/accordin/AccordionExtension";
@@ -87,7 +88,7 @@ export function useCustomEditor(opts) {
       CustomLink.configure({
         openOnClick: false,
       }),
-      // CustomLink,
+      // LinkExtension,
       TextAlignExtension.configure({
         types: ["heading", "paragraph"],
       }),
