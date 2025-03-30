@@ -55,7 +55,7 @@ export const LinkDialog: React.FC<LinkDialogProps> = (props) => {
         <>
             <ModalLayout
                 labelledBy="link-dialog-title"
-                key={url}
+                key={activeTab}
             >
                 <Box padding={8} background="neutral100">
                     <Box paddingBottom={4} borderBottom="1px solid">
