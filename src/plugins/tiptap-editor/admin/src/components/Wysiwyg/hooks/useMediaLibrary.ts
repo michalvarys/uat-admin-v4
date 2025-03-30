@@ -3,6 +3,7 @@ import { MediaFile } from "../plugins/link/types";
 
 interface UseMediaLibraryProps {
   onFileSelect?: (file: MediaFile) => void;
+  defaultFile?: MediaFile | null;
 }
 
 /**
@@ -10,10 +11,13 @@ interface UseMediaLibraryProps {
  */
 export const useMediaLibrary = ({
   onFileSelect,
+  defaultFile = null,
 }: UseMediaLibraryProps = {}) => {
   // State
   const [isVisible, setIsVisible] = useState(false);
-  const [selectedFile, setSelectedFile] = useState<MediaFile | null>(null);
+  const [selectedFile, setSelectedFile] = useState<MediaFile | null>(
+    defaultFile
+  );
 
   // Toggle media library visibility
   const toggleMediaLibrary = useCallback(() => {

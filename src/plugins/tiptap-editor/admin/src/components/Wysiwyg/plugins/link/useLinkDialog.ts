@@ -1,10 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { LinkAttributes } from "./types";
 import useDialog from "../../hooks/useDialog";
-import useRecordSelector, {
-  RECORD_TYPES,
-  RecordType,
-} from "../../hooks/useRecordSelector";
+import useRecordSelector, { RECORD_TYPES } from "../../hooks/useRecordSelector";
 import useMediaLibrary from "../../hooks/useMediaLibrary";
 
 interface UseLinkDialogProps {
@@ -244,6 +241,11 @@ export const useLinkDialog = ({
         // For download links, automatically set type to "button" and target to "_blank"
         setType("button");
         setTarget("_blank");
+        mediaLibrary.setSelectedFile({
+          alt: (initialAttributes.download as string) || "",
+          url: initialAttributes.href || "",
+          mime: "",
+        });
         break;
 
       case LINK_TYPES.CUSTOM:
