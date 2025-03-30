@@ -10,11 +10,11 @@ export default factories.createCoreController(
   ({ strapi }) => {
     return {
       async find(ctx) {
-        await this.validateQuery(ctx);
         type Query = {
           locale?: string;
           populate?: Record<keyof ApiGalleryGallery["attributes"], any>;
         };
+
         await this.validateQuery(ctx);
         const query: Query = await this.sanitizeQuery(ctx);
 
