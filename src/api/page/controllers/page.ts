@@ -10,7 +10,6 @@ export default factories.createCoreController(
   ({ strapi }) => {
     return {
       async find(ctx) {
-        // console.log("find", ctx);
         await this.validateQuery(ctx);
         type Query = {
           locale?: string;

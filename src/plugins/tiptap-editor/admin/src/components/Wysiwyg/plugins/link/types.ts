@@ -19,10 +19,7 @@ export interface NewsEntryAttributes {
   [key: string]: any;
 }
 
-export interface Page {
-  id: number;
-  attributes: PageAttributes;
-}
+export interface Page extends PageAttributes {}
 
 export interface NewsEntry {
   id: number;

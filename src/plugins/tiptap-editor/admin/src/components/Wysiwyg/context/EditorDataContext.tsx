@@ -31,10 +31,10 @@ export const EditorDataProvider: React.FC<EditorDataProviderProps> = ({ children
 
         try {
             setIsPagesLoading(true);
-            const { data } = await get<{ data: Page[] }>(
+            const { data } = await get<Page[]>(
                 "/api/pages?pagination[pageSize]=1000&populate=*"
             );
-            setPages(data.data || []);
+            setPages(data || []);
             setIsPagesLoading(false);
         } catch (error) {
             console.error("Error fetching pages:", error);
