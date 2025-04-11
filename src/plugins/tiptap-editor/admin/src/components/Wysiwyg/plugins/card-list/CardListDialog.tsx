@@ -255,8 +255,8 @@ export const CardListDialog: React.FC<CardListDialogProps> = (props) => {
                                                                 >
                                                                     {recordSelector.pages.map((page) => (
                                                                         <ComboboxOption key={page.id} value={page.id.toString()}>
-                                                                            {page.attributes.title ||
-                                                                                page.attributes.name ||
+                                                                            {page.title ||
+                                                                                page.name ||
                                                                                 `Page ${page.id}`}
                                                                         </ComboboxOption>
                                                                     ))}

@@ -204,8 +204,8 @@ export const useCardListDialog = ({
       if (selectedRecord) {
         const title =
           recordType === RECORD_TYPES.PAGES
-            ? (selectedRecord as any).attributes?.title ||
-              (selectedRecord as any).attributes?.name ||
+            ? (selectedRecord as any)?.title ||
+              (selectedRecord as any)?.name ||
               `Page ${(selectedRecord as any).id}`
             : (selectedRecord as any).title ||
               `News ${(selectedRecord as any).id}`;

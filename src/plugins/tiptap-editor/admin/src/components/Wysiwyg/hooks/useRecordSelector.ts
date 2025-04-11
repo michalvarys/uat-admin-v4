@@ -53,12 +53,10 @@ export const useRecordSelector = ({
 
     if (recordType === RECORD_TYPES.PAGES) {
       const page = record as any;
-      return (
-        page.attributes?.title || page.attributes?.name || `Page ${page.id}`
-      );
+      return page?.title || page?.name || `Page ${page.id}`;
     } else if (recordType === RECORD_TYPES.NEWS) {
       const entry = record as any;
-      return entry.title || `News ${entry.id}`;
+      return entry?.title || `News ${entry.id}`;
     }
 
     return "";
