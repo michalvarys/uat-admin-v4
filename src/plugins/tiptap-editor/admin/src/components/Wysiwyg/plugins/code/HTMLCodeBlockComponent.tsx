@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { NodeViewWrapper, NodeViewProps } from '@tiptap/react'
 import {
   Box,
-  Button,
+  // Button,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -17,6 +17,15 @@ import {
   GridItem,
 } from '@chakra-ui/react'
 import { EditIcon, DragHandleIcon, ViewIcon } from '@chakra-ui/icons'
+import {
+  Dialog,
+  DialogBody,
+  DialogFooter,
+  Button
+} from "@strapi/design-system";
+
+import Wrapper from '../../style'
+
 import { HTMLCodeBlockView } from '@ssupat/components'
 import { WrapperComponent } from '../../Wrapper'
 
@@ -84,20 +93,23 @@ export const HTMLCodeBlockComponent: React.ComponentType<NodeViewProps> = ({
             >
               <IconButton
                 size="sm"
-                aria-label="Drag handle"
+                aria-label="Přesunout"
+                title="Přesunout"
                 icon={<DragHandleIcon />}
                 cursor="move"
                 data-drag-handle
               />
               <IconButton
                 size="sm"
-                aria-label="Edit HTML"
+                title="Upravit HTML"
+                aria-label="Upravit HTML"
                 icon={<EditIcon />}
                 onClick={onOpen}
               />
               <IconButton
                 size="sm"
-                aria-label="Toggle preview"
+                title="Přepnout náhled"
+                aria-label="Přepnout náhled"
                 icon={<ViewIcon />}
                 onClick={() => setPreview(!preview)}
               />
@@ -105,29 +117,40 @@ export const HTMLCodeBlockComponent: React.ComponentType<NodeViewProps> = ({
           </GridItem>
         </Grid>
 
-        <Modal isOpen={isOpen} onClose={onClose} size="xl">
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>Edit HTML Code</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
+        <Dialog
+          title="Upravit HTML kód" isOpen={isOpen} onClose={onClose} size="xl">
+          <DialogBody>
+            <Wrapper>
               <Textarea
                 value={currentHTML}
                 onChange={(e) => setCurrentHTML(e.target.value)}
                 minHeight="300px"
                 fontFamily="mono"
+                color="white"
               />
-            </ModalBody>
-            <ModalFooter>
-              <Button variant="ghost" mr={3} onClick={onClose}>
-                Cancel
+            </Wrapper>
+          </DialogBody>
+
+          <DialogFooter startAction={
+            <Button
+              variant="tertiary"
+              size="S"
+              onClick={onClose}
+            >
+              Zrušit
+            </Button>
+          }
+            endAction={
+              <Button
+                variant="success-light"
+                size="S"
+                onClick={handleSave}
+              >
+                Uložit
               </Button>
-              <Button colorScheme="blue" onClick={handleSave}>
-                Save
-              </Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
+            }
+          />
+        </Dialog>
       </WrapperComponent>
     </NodeViewWrapper>
   )

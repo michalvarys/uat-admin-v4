@@ -23,7 +23,6 @@ import TableExtension from "@tiptap/extension-table";
 import TableRowExtension from "@tiptap/extension-table-row";
 import TableCellExtension from "@tiptap/extension-table-cell";
 import TableHeaderExtension from "@tiptap/extension-table-header";
-import TextStyleExtension from "@tiptap/extension-text-style";
 import CharacterCountExtension from "@tiptap/extension-character-count";
 import OrderedListExtension from "@tiptap/extension-ordered-list";
 import BlockquoteExtension from "@tiptap/extension-blockquote";
@@ -42,6 +41,12 @@ import { TabsExtension } from "./plugins/tabs/TabsExtension";
 import { ChakraImageExtension } from "./plugins/image/ImageExtension";
 import { GalleryExtension } from "./plugins/gallery/GalleryExtension";
 import { CardList } from "./plugins/card-list/CardListExtension";
+import { FlexboxExtension } from "./plugins/flexbox/FlexboxExtension";
+import {
+  TextStyleExtension,
+  ColorExtension,
+  FontFamilyExtension,
+} from "./plugins/text-style/TextStyleExtensions";
 
 export function useCustomEditor(opts) {
   const {
@@ -70,9 +75,15 @@ export function useCustomEditor(opts) {
       TabsExtension,
       StackExtension,
       BoxExtension,
+      FlexboxExtension,
       HTMLCodeBlockExtension,
       AccordionExtension,
       CardList,
+      // Text styling extensions
+      TextStyleExtension,
+      ColorExtension,
+      FontFamilyExtension,
+      // Core extensions
       DocumentExtension,
       ParagraphExtension,
       TextExtension,
@@ -98,7 +109,6 @@ export function useCustomEditor(opts) {
       TableRowExtension,
       TableCellExtension,
       TableHeaderExtension,
-      TextStyleExtension,
       BlockquoteExtension,
       CodeBlockExtension,
       CodeExtension,
@@ -111,13 +121,12 @@ export function useCustomEditor(opts) {
       PlaceholderExtension.configure({
         placeholder: ({ node }) => {
           if (node.type.name === "heading") {
-            // console.log('node heading')
-            return "Write awesome title...";
+            return "Napište nějaký titulek...";
           }
 
           // console.log(node)
 
-          return "Write something awesome...";
+          return "Napište nějaký text...";
         },
       }),
       HistoryExtension,
@@ -134,7 +143,7 @@ export function useCustomEditor(opts) {
     onUpdate({ editor }) {
       // if (debug) console.log('onUpdate')
 
-      onChange({ target: { name, value: editor.getHTML() } });
+      onChange?.({ target: { name, value: editor?.getHTML() } });
     },
   });
 

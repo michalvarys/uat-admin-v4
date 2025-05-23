@@ -24,8 +24,8 @@ import { IconButton, Box, Switch, FormLabel } from '@chakra-ui/react';
 import { EditIcon } from '@chakra-ui/icons';
 import { FaCogs } from 'react-icons/fa';
 import { GrMoreVertical } from 'react-icons/gr';
-import { ColorsSelect } from '../ColorSelect';
-import { getChakraStyles } from '../../tools';
+import { ColorsSelect } from '../../ColorSelect';
+import { getChakraStyles, findColorKeyByValue } from '../../tools';
 
 const ResponsiveTab = ({
     attributes,
@@ -42,13 +42,13 @@ const ResponsiveTab = ({
             <Grid gap={4} gridCols={2}>
                 <ColorsSelect
                     label="Background"
-                    value={attributes.bg || ''}
+                    value={attributes.bg ? findColorKeyByValue(attributes.bg) : ''}
                     onChange={value => onChange({ ...attributes, bg: value })}
                 />
 
                 <ColorsSelect
                     label="Color"
-                    value={attributes.color || ''}
+                    value={attributes.color ? findColorKeyByValue(attributes.color) : ''}
                     onChange={value => onChange({ ...attributes, color: value })}
                 />
 

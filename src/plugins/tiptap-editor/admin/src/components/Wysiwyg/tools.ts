@@ -6,8 +6,137 @@ import { ResponsiveValue, SystemStyleObject } from "@chakra-ui/react";
 export const getColorValue = (colorKey?: string): string | undefined => {
   if (!colorKey) return undefined;
   if (colors[colorKey]) return colors[colorKey];
-  const [group, shade] = colorKey.split(".");
-  return colors[group]?.[shade];
+  try {
+    const [group, shade] = colorKey.split(".");
+    return colors[group][shade];
+  } catch {
+    return "inherit";
+  }
+};
+
+export function normalizeColor(color) {
+  const tempEl = document.createElement("div");
+  tempEl.style.color = color;
+  document.body.appendChild(tempEl);
+
+  const computedColor = getComputedStyle(tempEl).color;
+
+  document.body.removeChild(tempEl);
+  return computedColor;
+}
+
+export function compareColor(color1, color2) {
+  return normalizeColor(color1) === normalizeColor(color2);
+}
+
+// Get all available color keys from the color system
+export const getAvailableColors = () => {
+  const colorKeys = {};
+
+  // Base Colors
+  ["transparent", "current", "black", "white"].forEach((color) => {
+    colorKeys[color] = true;
+  });
+
+  // Brand Colors
+  ["uat_dark", "uat_light", "uat_green", "uat_orange"].forEach((color) => {
+    colorKeys[color] = true;
+  });
+
+  // Alpha Colors
+  ["whiteAlpha", "blackAlpha"].forEach((colorGroup) => {
+    for (let i = 1; i <= 9; i++) {
+      colorKeys[`${colorGroup}.${i}00`] = true;
+    }
+  });
+
+  // Primary Colors
+  [
+    "gray",
+    "red",
+    "orange",
+    "yellow",
+    "green",
+    "teal",
+    "blue",
+    "cyan",
+    "purple",
+    "pink",
+  ].forEach((colorGroup) => {
+    for (let i = 1; i <= 9; i++) {
+      colorKeys[`${colorGroup}.${i}00`] = true;
+    }
+  });
+
+  // Social Colors
+  [
+    "linkedin",
+    "facebook",
+    "messenger",
+    "whatsapp",
+    "twitter",
+    "telegram",
+  ].forEach((colorGroup) => {
+    for (let i = 1; i <= 9; i++) {
+      colorKeys[`${colorGroup}.${i}00`] = true;
+    }
+  });
+
+  return colorKeys;
+};
+
+// Find a color key by its value using normalization for comparison
+export const findColorKeyByValue = (colorValue: string): string => {
+  if (!colorValue) return "";
+
+  // First try direct lookup with getColorKey
+  const directKey = getColorKey(colorValue);
+  if (directKey !== colorValue) {
+    return directKey;
+  }
+
+  // If direct lookup fails, try normalizing and comparing
+  const normalizedColor = normalizeColor(colorValue);
+
+  // Check all available colors
+  for (const key of Object.keys(getAvailableColors())) {
+    const value = getColorValue(key);
+    if (value && compareColor(normalizedColor, value)) {
+      return key;
+    }
+  }
+
+  // If no match found, return the original value
+  return colorValue;
+};
+
+// Function to convert a hex color value back to a color key
+export const getColorKey = (hexValue?: string): string => {
+  if (!hexValue) return "";
+
+  // Check direct colors (non-grouped)
+  for (const [key, value] of Object.entries(colors)) {
+    if (
+      typeof value === "string" &&
+      value.toLowerCase() === hexValue.toLowerCase()
+    ) {
+      return key;
+    }
+  }
+
+  // Check grouped colors
+  for (const [groupKey, groupColors] of Object.entries(colors)) {
+    if (typeof groupColors === "object") {
+      for (const [shadeKey, colorValue] of Object.entries(groupColors)) {
+        if (colorValue.toLowerCase() === hexValue.toLowerCase()) {
+          return `${groupKey}.${shadeKey}`;
+        }
+      }
+    }
+  }
+
+  // If no match found, return the original hex value
+  return hexValue;
 };
 
 export const createResponsiveValue = <T>(

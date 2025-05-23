@@ -21,8 +21,8 @@ import { Box, FormLabel, IconButton, Switch, SystemStyleObject } from '@chakra-u
 import { GrMoreVertical } from 'react-icons/gr'
 import { colors } from '@ssupat/components'
 import { StackAttributes } from './StackExtension'
-import { ColorsSelect } from '../ColorSelect'
-import { getChakraStyles, createResponsiveValue, getColorValue } from '../../tools'
+import { ColorsSelect } from '../../ColorSelect'
+import { getChakraStyles, createResponsiveValue, getColorValue, findColorKeyByValue } from '../../tools'
 import { BaseAttributes } from '../../../types/styleTypes'
 
 const ResponsiveTab = ({
@@ -96,18 +96,18 @@ const ResponsiveTab = ({
                 {attributes.divider && (
                     <ColorsSelect
                         label="Divider Color"
-                        value={attributes.dividerColor}
+                        value={attributes.dividerColor ? findColorKeyByValue(attributes.dividerColor) : ''}
                         onChange={value => onChange({ ...attributes, dividerColor: value })} />
                 )}
 
                 <ColorsSelect
                     label="Pozadí"
-                    value={attributes.bg}
+                    value={attributes.bg ? findColorKeyByValue(attributes.bg) : ''}
                     onChange={value => onChange({ ...attributes, bg: value })} />
 
                 <ColorsSelect
                     label="Barva textu"
-                    value={attributes.color}
+                    value={attributes.color ? findColorKeyByValue(attributes.color) : ''}
                     onChange={value => onChange({ ...attributes, color: value })}
                 />
 

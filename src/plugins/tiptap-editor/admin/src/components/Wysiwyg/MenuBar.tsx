@@ -14,6 +14,7 @@ import {
     Stack,
     TextInput,
 } from "@strapi/design-system";
+import { MdViewColumn, MdFormatColorText } from "react-icons/md";
 import {
     Bold as BoldIcon,
     Italic as ItalicIcon,
@@ -49,6 +50,9 @@ import TabIcon from "@strapi/icons/Blocks.js";
 import TiptapChakraImage from "./plugins/image/TiptapChakraImage";
 import TiptapChakraGallery from "./plugins/gallery/TiptapChakraGallery";
 import CardListButton from "./plugins/card-list/CardListButton";
+import ColorButton from "./plugins/text-style/ColorButton";
+import FontSizeButton from "./plugins/text-style/FontSizeButton";
+import FontFamilyButton from "./plugins/text-style/FontFamilyButton";
 
 const onHeadingChange = (editor, type) => {
     switch (type) {
@@ -74,6 +78,7 @@ const MenuBar = ({ editor, debug, setDebug, playground }) => {
     const [isVisibleLinkDialog, setIsVisibleLinkDialog] = useState(false);
     const [linkInput, setLinkInput] = useState("");
     const [linkTargetInput, setLinkTargetInput] = useState("");
+    const [isTextStyleOpen, setIsTextStyleOpen] = useState(false);
 
     const onInsertLink = () => {
         // Empty
@@ -130,11 +135,17 @@ const MenuBar = ({ editor, debug, setDebug, playground }) => {
         >
             <Flex justifyContent="space-between">
                 <Flex style={{ flexWrap: "wrap" }}>
+                    <IconButtonGroup className="button-group">
+                        <ColorButton editor={editor} />
+                        <FontFamilyButton editor={editor} />
+                        {/* <FontSizeButton editor={editor} /> */}
+                    </IconButtonGroup>
+
                     <Box className="button-group">
                         <Select
                             required
                             size="S"
-                            placeholder="Text style"
+                            placeholder="Styl textu"
                             onChange={(val) => onHeadingChange(editor, val)}
                             value={selectedTextStyle}
                         >
@@ -189,6 +200,7 @@ const MenuBar = ({ editor, debug, setDebug, playground }) => {
                             onClick={() => editor.chain().focus().toggleUnderline().run()}
                             disabled={!editor.can().chain().focus().toggleUnderline().run()}
                         />
+
                     </IconButtonGroup>
 
                     <IconButtonGroup className="button-group">
@@ -339,6 +351,12 @@ const MenuBar = ({ editor, debug, setDebug, playground }) => {
                                     { title: 'Tab 1', content: '<p>Tab 1 content</p>' },
                                     { title: 'Tab 2', content: '<p>Tab 2 content</p>' }
                                 ]).run()}
+                        />
+
+                        <IconButton
+                            icon={<MdViewColumn />}
+                            label="Přidat Flexbox"
+                            onClick={() => editor.chain().focus().setFlexbox({}).run()}
                         />
 
                     </IconButtonGroup>

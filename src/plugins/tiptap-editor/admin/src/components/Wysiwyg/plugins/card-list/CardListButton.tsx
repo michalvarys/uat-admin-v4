@@ -13,23 +13,43 @@ const CardListButton: React.FC<CardListButtonProps> = ({ editor }) => {
     };
 
     const handleSave = (attributes) => {
-        // Close the dialog first
-        setIsDialogOpen(false);
+        try {
+            // Close the dialog first
+            setIsDialogOpen(false);
 
-        // Then update the editor
-        if (editor) {
-            // Check if we're updating an existing card list or creating a new one
-            if (editor.isActive("cardList")) {
-                editor.commands.updateCardList({
-                    cards: attributes.cards,
-                    columns: attributes.columns
-                });
-            } else {
-                editor.commands.setCardList({
-                    cards: attributes.cards,
-                    columns: attributes.columns
-                });
+            // Then update the editor
+            if (editor) {
+                // Check if editor has necessary methods
+                if (!editor.isActive || !editor.commands) {
+                    console.error("Editor is missing required methods");
+                    return;
+                }
+
+                // Check if we're updating an existing card list or creating a new one
+                if (editor.isActive("cardList")) {
+                    if (typeof editor.commands.updateCardList !== 'function') {
+                        console.error("updateCardList command is not available");
+                        return;
+                    }
+
+                    editor.commands.updateCardList({
+                        cards: attributes.cards,
+                        columns: attributes.columns
+                    });
+                } else {
+                    if (typeof editor.commands.setCardList !== 'function') {
+                        console.error("setCardList command is not available");
+                        return;
+                    }
+
+                    editor.commands.setCardList({
+                        cards: attributes.cards,
+                        columns: attributes.columns
+                    });
+                }
             }
+        } catch (error) {
+            console.error("Error saving card list:", error);
         }
     };
 
@@ -42,7 +62,7 @@ const CardListButton: React.FC<CardListButtonProps> = ({ editor }) => {
             <IconButton
                 icon={<Grid />}
                 label="Seznam karet"
-                className={editor.isActive("cardList") ? "is-active" : ""}
+                className={editor && editor.isActive ? (editor.isActive("cardList") ? "is-active" : "") : ""}
                 onClick={handleClick}
             />
 
@@ -50,10 +70,10 @@ const CardListButton: React.FC<CardListButtonProps> = ({ editor }) => {
                 isOpen={isDialogOpen}
                 onClose={handleClose}
                 initialAttributes={{
-                    cards: editor.isActive("cardList")
+                    cards: editor && editor.isActive && editor.isActive("cardList") && editor.getAttributes
                         ? editor.getAttributes("cardList").cards || []
                         : [],
-                    columns: editor.isActive("cardList")
+                    columns: editor && editor.isActive && editor.isActive("cardList") && editor.getAttributes
                         ? editor.getAttributes("cardList").columns || [1, 2, 3, 4, 5]
                         : [1, 2, 3, 4, 5],
                 }}

@@ -1,7 +1,6 @@
 import React from 'react';
 import { Box } from '@chakra-ui/react';
 import { colors } from '@ssupat/components'
-import { BoxAttributes } from './box/BoxExtension';
 import {
     Button,
     Dialog,
@@ -10,8 +9,8 @@ import {
     Flex,
     Grid,
     NumberInput,
-    MultiSelectOption,
-    MultiSelect,
+    Option,
+    Select,
     Switch,
     TextInput,
     Tabs,
@@ -26,14 +25,18 @@ const ColorOption = ({ color, label, value }: { color: string, label: string, va
     const getColorValue = (colorKey: string) => {
         if (!colorKey) return undefined;
         if (colors[colorKey]) return colors[colorKey];
-        const [group, shade] = colorKey.split('.');
-        return colors[group]?.[shade];
+        try {
+            const [group, shade] = colorKey.split('.');
+            return colors[group][shade]
+        } catch {
+            return "inherit"
+        }
     };
 
     const colorValue = getColorValue(value);
 
     return (
-        <MultiSelectOption value={value}>
+        <Option value={value}>
             <Flex alignItems="center" gap={2}>
                 <Box
                     style={{
@@ -46,7 +49,7 @@ const ColorOption = ({ color, label, value }: { color: string, label: string, va
                 />
                 {label}
             </Flex>
-        </MultiSelectOption>
+        </Option>
     );
 };
 
@@ -55,16 +58,16 @@ export function ColorsSelect({
     label,
     onChange,
 }: {
-    value: any;
+    value: string;
     label: string;
-    onChange: (attrs: any) => void;
+    onChange: (value: string) => void;
 }) {
     const getColorOptions = () => (
         <>
-            <MultiSelectOption value="">None</MultiSelectOption>
+            <Option value="">None</Option>
 
             {/* Base Colors */}
-            <MultiSelectOption value="none" disabled>── Base Colors ──</MultiSelectOption>
+            <Option value="none" disabled>── Base Colors ──</Option>
             {['transparent', 'current', 'black', 'white'].map(color => (
                 <ColorOption
                     key={color}
@@ -75,7 +78,7 @@ export function ColorsSelect({
             ))}
 
             {/* Brand Colors */}
-            <MultiSelectOption value="none" disabled>── Brand Colors ──</MultiSelectOption>
+            <Option value="none" disabled>── Brand Colors ──</Option>
             {['uat_dark', 'uat_light', 'uat_green', 'uat_orange'].map(color => (
                 <ColorOption
                     key={color}
@@ -88,7 +91,7 @@ export function ColorsSelect({
             {/* Alpha Colors */}
             {['whiteAlpha', 'blackAlpha'].map(colorGroup => (
                 <React.Fragment key={colorGroup}>
-                    <MultiSelectOption value="none" disabled>{`── ${colorGroup} ──`}</MultiSelectOption>
+                    <Option value="none" disabled>{`── ${colorGroup} ──`}</Option>
                     {Object.keys(colors[colorGroup]).map(shade => (
                         <ColorOption
                             key={`${colorGroup}.${shade}`}
@@ -103,7 +106,7 @@ export function ColorsSelect({
             {/* Primary Colors */}
             {['gray', 'red', 'orange', 'yellow', 'green', 'teal', 'blue', 'cyan', 'purple', 'pink'].map(colorGroup => (
                 <React.Fragment key={colorGroup}>
-                    <MultiSelectOption value="none" disabled>{`── ${colorGroup} ──`}</MultiSelectOption>
+                    <Option value="none" disabled>{`── ${colorGroup} ──`}</Option>
                     {Object.keys(colors[colorGroup]).map(shade => (
                         <ColorOption
                             key={`${colorGroup}.${shade}`}
@@ -118,7 +121,7 @@ export function ColorsSelect({
             {/* Social Colors */}
             {['linkedin', 'facebook', 'messenger', 'whatsapp', 'twitter', 'telegram'].map(colorGroup => (
                 <React.Fragment key={colorGroup}>
-                    <MultiSelectOption value="none" disabled>{`── ${colorGroup} ──`}</MultiSelectOption>
+                    <Option value="none" disabled>{`── ${colorGroup} ──`}</Option>
                     {Object.keys(colors[colorGroup]).map(shade => (
                         <ColorOption
                             key={`${colorGroup}.${shade}`}
@@ -133,12 +136,12 @@ export function ColorsSelect({
     );
 
     return (
-        <MultiSelect
+        <Select
             label={label}
             value={value}
             onChange={onChange}
         >
             {getColorOptions()}
-        </MultiSelect>
+        </Select>
     )
 }

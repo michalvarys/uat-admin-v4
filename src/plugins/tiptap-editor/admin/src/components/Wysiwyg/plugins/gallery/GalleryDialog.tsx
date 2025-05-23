@@ -40,7 +40,6 @@ export const GalleryDialog: React.FC = () => {
         <>
             {isOpen && (
                 <ModalLayout
-                    onClose={onClose}
                     labelledBy="gallery-title"
                 >
                     <Box padding={8} background="neutral100">
