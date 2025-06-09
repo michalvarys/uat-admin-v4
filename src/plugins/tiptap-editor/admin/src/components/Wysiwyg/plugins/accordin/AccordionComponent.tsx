@@ -75,7 +75,7 @@ export const AccordionComponent: React.ComponentType<AccordionComponentProps> = 
         <Accordion allowToggle>
           <AccordionItem>
             <AccordionButton p={4}>
-              <Flex flex="1" alignItems="center">
+              <Flex flex="1" alignItems="center" position="relative">
                 {isEditing ? (
                   <Input
                     value={titleValue}
@@ -109,8 +109,12 @@ export const AccordionComponent: React.ComponentType<AccordionComponentProps> = 
               <AccordionIcon />
             </AccordionButton>
             <AccordionPanel p={4}>
-              <Box w="full">
-                <NodeViewContent />
+              <Box w="full" sx={{
+                '& .content': {
+                  p: 2
+                }
+              }}>
+                <NodeViewContent className="content" />
               </Box>
             </AccordionPanel>
           </AccordionItem>

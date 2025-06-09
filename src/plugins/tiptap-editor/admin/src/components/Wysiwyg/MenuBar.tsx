@@ -53,6 +53,8 @@ import CardListButton from "./plugins/card-list/CardListButton";
 import ColorButton from "./plugins/text-style/ColorButton";
 import FontSizeButton from "./plugins/text-style/FontSizeButton";
 import FontFamilyButton from "./plugins/text-style/FontFamilyButton";
+import PreviewButton from "./plugins/preview/PreviewButton";
+import TranslationButton from "./plugins/translation/TranslationButton";
 
 const onHeadingChange = (editor, type) => {
     switch (type) {
@@ -377,7 +379,10 @@ const MenuBar = ({ editor, debug, setDebug, playground }) => {
                             onClick={() => editor.chain().focus().redo().run()}
                             disabled={!editor.can().chain().focus().redo().run()}
                         />
+                        <PreviewButton editor={editor} />
                     </IconButtonGroup>
+
+                    <TranslationButton editor={editor} />
                 </Flex>
                 {playground && (
                     <Flex className={"debug-button"}>

@@ -6,13 +6,10 @@ import Initializer from './components/Initializer'
 import PluginIcon from './components/PluginIcon'
 import getTrad from './utils/getTrad'
 import WysiwygComponent from './components/Wysiwyg'
-import { Fonts, themeProps } from '@ssupat/components'
-import { ChakraProvider, extendTheme } from '@chakra-ui/react'
-const theme = extendTheme(themeProps)
+import { ChakraProvider } from './theme'
 
 const Wysiwyg = (props) => (
-    <ChakraProvider theme={theme}>
-        <Fonts />
+    <ChakraProvider>
         <WysiwygComponent {...props} />
     </ChakraProvider>
 )

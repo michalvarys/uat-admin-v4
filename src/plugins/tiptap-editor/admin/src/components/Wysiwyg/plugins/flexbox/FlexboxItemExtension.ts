@@ -1,6 +1,6 @@
 import { Node, mergeAttributes } from "@tiptap/core";
 import { ReactNodeViewRenderer } from "@tiptap/react";
-import { FlexboxItemComponent } from "./FlexboxItemComponent";
+import FlexboxItemComponent from "./FlexboxItemComponent";
 
 export interface FlexboxItemOptions {
   HTMLAttributes: Record<string, any>;
@@ -89,6 +89,21 @@ export const FlexboxItemExtension = Node.create<FlexboxItemOptions>({
           return {
             "data-background": attributes.background,
             style: `background-color: ${attributes.background};`,
+          };
+        },
+      },
+      // Background image
+      backgroundImage: {
+        default: "",
+        parseHTML: (element) =>
+          element.getAttribute("data-background-image") || "",
+        renderHTML: (attributes) => {
+          if (!attributes.backgroundImage) {
+            return { "data-background-image": "" };
+          }
+          return {
+            "data-background-image": attributes.backgroundImage,
+            style: `background-image: url(${attributes.backgroundImage}); background-size: cover; background-position: center;`,
           };
         },
       },

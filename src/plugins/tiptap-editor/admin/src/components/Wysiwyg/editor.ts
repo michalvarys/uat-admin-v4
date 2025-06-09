@@ -37,11 +37,12 @@ import { AccordionExtension } from "./plugins/accordin/AccordionExtension";
 import { HTMLCodeBlockExtension } from "./plugins/code/HTMLCodeBlockExtension";
 import { BoxExtension } from "./plugins/box/BoxExtension";
 import { StackExtension } from "./plugins/stack/StackExtension";
-import { TabsExtension } from "./plugins/tabs/TabsExtension";
+import { TabsExtension } from "./plugins/tabs/TabsExtension.ts";
 import { ChakraImageExtension } from "./plugins/image/ImageExtension";
 import { GalleryExtension } from "./plugins/gallery/GalleryExtension";
 import { CardList } from "./plugins/card-list/CardListExtension";
 import { FlexboxExtension } from "./plugins/flexbox/FlexboxExtension";
+import { TranslationExtension } from "./plugins/translation/TranslationExtension";
 import {
   TextStyleExtension,
   ColorExtension,
@@ -65,7 +66,7 @@ export function useCustomEditor(opts) {
     attribute,
   } = opts;
 
-  const [content, setContent] = useState(value || "");
+  const [content, setContent] = useState("");
   const characterLimit = attribute?.maxLength || 0;
 
   const editor = useEditor({
@@ -76,6 +77,7 @@ export function useCustomEditor(opts) {
       StackExtension,
       BoxExtension,
       FlexboxExtension,
+      TranslationExtension,
       HTMLCodeBlockExtension,
       AccordionExtension,
       CardList,
@@ -141,9 +143,15 @@ export function useCustomEditor(opts) {
     onBeforeCreate({ editor }) {},
 
     onUpdate({ editor }) {
-      // if (debug) console.log('onUpdate')
+      const value = editor?.getJSON() || { type: "doc", content: [] };
+      value.html = editor?.getHTML() || "";
 
-      onChange?.({ target: { name, value: editor?.getHTML() } });
+      onChange?.({
+        target: {
+          name,
+          value: JSON.stringify(value),
+        },
+      });
     },
   });
 
@@ -151,8 +159,14 @@ export function useCustomEditor(opts) {
     if (!editor) return;
 
     if (content === "") {
-      setContent(value);
-      editor.commands.setContent(value, false);
+      try {
+        const val = JSON.parse(value);
+        setContent(val);
+        editor.commands.setContent(val, false);
+      } catch {
+        setContent(value);
+        editor.commands.setContent(value, false);
+      }
     }
   }, [editor]);
 

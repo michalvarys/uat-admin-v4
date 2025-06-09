@@ -9,6 +9,7 @@ export default ({ env }) => ({
   "tiptap-editor": {
     enabled: true,
     resolve: "./src/plugins/tiptap-editor",
+    geminyKey: env("GEMINI_API_KEY"),
   },
   upload: {
     config: {
