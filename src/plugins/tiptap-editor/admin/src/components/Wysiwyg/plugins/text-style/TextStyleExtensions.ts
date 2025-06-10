@@ -1,6 +1,6 @@
-import TextStyle from "@tiptap/extension-text-style";
+import TextStyle from "./TextStyleExtensionLegacy";
 import Color from "./ColorExtension";
-import FontFamily from "@tiptap/extension-font-family";
+import FontFamily from "./FontFamilyExtension";
 
 // Configure TextStyle extension
 // This is the base extension that allows applying inline styles to text
