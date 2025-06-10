@@ -1,4 +1,4 @@
-import { Editor } from "@tiptap/core";
+import { Editor, NodeViewProps } from "@tiptap/core";
 import { Node } from "prosemirror-model";
 
 export type FlexDirection = "row" | "column" | "row-reverse" | "column-reverse";
@@ -34,7 +34,7 @@ export interface FlexboxItemAttributes {
   order: string;
 }
 
-export interface FlexboxComponentProps {
+export interface FlexboxComponentProps extends NodeViewProps {
   node: Node & {
     attrs: FlexboxAttributes;
   };
@@ -43,7 +43,7 @@ export interface FlexboxComponentProps {
   getPos: () => number;
 }
 
-export interface FlexboxItemComponentProps {
+export interface FlexboxItemComponentProps extends NodeViewProps {
   node: Node & {
     attrs: FlexboxItemAttributes;
   };

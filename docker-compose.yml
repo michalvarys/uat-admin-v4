@@ -2,7 +2,7 @@ services:
   strapi:
     container_name: strapi
     build: .
-    image: michalvarys/uat-admin-v4:latest
+    image: varyshop/uat-admin:latest
     restart: unless-stopped
     env_file: .env
     environment:
@@ -16,6 +16,7 @@ services:
       ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
       APP_KEYS: ${APP_KEYS}
       NODE_ENV: ${NODE_ENV}
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
     volumes:
       # - ./config:/opt/app/config
       # - ./src:/opt/app/src

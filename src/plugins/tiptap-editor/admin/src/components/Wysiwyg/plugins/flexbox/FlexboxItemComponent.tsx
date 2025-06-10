@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useState } from "react";
+import React, { FunctionComponent, useState } from "react";
 import { NodeViewWrapper, NodeViewContent } from "@tiptap/react";
 import { ButtonGroup, IconButton } from "@chakra-ui/react";
 import { Box, Flex } from "@strapi/design-system";
@@ -14,7 +14,7 @@ function FlexboxItemComponent({
     updateAttributes,
     editor,
     getPos,
-}: PropsWithChildren<FlexboxItemComponentProps>) {
+}: FlexboxItemComponentProps) {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [mediaLibVisible, setMediaLibVisible] = useState(false);
@@ -148,4 +148,5 @@ function FlexboxItemComponent({
     );
 }
 
-export default FlexboxItemComponent;
+
+export default FlexboxItemComponent

@@ -1,6 +1,8 @@
 import { Node, mergeAttributes } from "@tiptap/core";
 import { ReactNodeViewRenderer } from "@tiptap/react";
 import FlexboxItemComponent from "./FlexboxItemComponent";
+import { FunctionComponent } from "react";
+import { FlexboxItemComponentProps } from "./types";
 
 export interface FlexboxItemOptions {
   HTMLAttributes: Record<string, any>;
@@ -154,7 +156,7 @@ export const FlexboxItemExtension = Node.create<FlexboxItemOptions>({
   },
 
   addNodeView() {
-    return ReactNodeViewRenderer(FlexboxItemComponent);
+    return ReactNodeViewRenderer(FlexboxItemComponent as FunctionComponent);
   },
 });
 

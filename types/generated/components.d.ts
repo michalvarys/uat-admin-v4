@@ -1,5 +1,220 @@
 import type { Schema, Attribute } from '@strapi/strapi';
 
+export interface NavigationInternalLink extends Schema.Component {
+  collectionName: 'components_navigation_internal_links';
+  info: {
+    name: 'InternalLink';
+    displayName: 'InternalLink';
+    icon: 'link';
+    description: '';
+  };
+  attributes: {
+    title: Attribute.String & Attribute.Required;
+    path: Attribute.String;
+  };
+}
+
+export interface NavigationImageBoxLink extends Schema.Component {
+  collectionName: 'components_navigation_image_box_links';
+  info: {
+    name: 'ImageBoxLink';
+    displayName: 'ImageBoxLink';
+    icon: 'image';
+    description: '';
+  };
+  attributes: {
+    title: Attribute.String & Attribute.Required;
+    subtitle: Attribute.String;
+    image_200x70: Attribute.Media<'images'> & Attribute.Required;
+  };
+}
+
+export interface NavigationFooterSection extends Schema.Component {
+  collectionName: 'components_navigation_footer_sections';
+  info: {
+    name: 'FooterSection';
+    displayName: 'FooterSection';
+    icon: 'bookmark';
+    description: '';
+  };
+  attributes: {
+    links: Attribute.Component<'navigation.internal-link', true>;
+    title: Attribute.String;
+  };
+}
+
+export interface NavigationExternalLink extends Schema.Component {
+  collectionName: 'components_navigation_external_links';
+  info: {
+    name: 'ExternalLink';
+    displayName: 'ExternalLink';
+    icon: 'external-link-alt';
+    description: '';
+  };
+  attributes: {
+    title: Attribute.String;
+    url: Attribute.String & Attribute.Required;
+  };
+}
+
+export interface NavigationDownloadLink extends Schema.Component {
+  collectionName: 'components_navigation_download_links';
+  info: {
+    name: 'DownloadLink';
+    displayName: 'DownloadLink';
+    icon: 'apple-alt';
+  };
+  attributes: {
+    title: Attribute.String & Attribute.Required;
+    url: Attribute.String & Attribute.Required;
+  };
+}
+
+export interface NavigationConditionalInternalLink extends Schema.Component {
+  collectionName: 'components_navigation_conditional_internal_links';
+  info: {
+    name: 'ConditionalInternalLink';
+    displayName: 'ConditionalInternalLink';
+    icon: 'external-link-square-alt';
+  };
+  attributes: {
+    title: Attribute.String & Attribute.Required;
+    subtitle: Attribute.String;
+    isVisible: Attribute.Boolean &
+      Attribute.Required &
+      Attribute.DefaultTo<true>;
+  };
+}
+
+export interface NavigationConditionalExternalLink extends Schema.Component {
+  collectionName: 'components_navigation_conditional_external_links';
+  info: {
+    name: 'ConditionalExternalLink';
+    displayName: 'ConditionalExternalLink';
+    icon: 'unlink';
+    description: '';
+  };
+  attributes: {
+    url: Attribute.String & Attribute.Required;
+    title: Attribute.String;
+    isVisible: Attribute.Boolean &
+      Attribute.Required &
+      Attribute.DefaultTo<true>;
+  };
+}
+
+export interface EntriesTeacherEntry extends Schema.Component {
+  collectionName: 'components_entries_teacher_entries';
+  info: {
+    name: 'teacher_entry';
+    displayName: 'teacher_entry';
+    icon: 'microscope';
+    description: '';
+  };
+  attributes: {
+    teacher: Attribute.Relation<
+      'entries.teacher-entry',
+      'oneToOne',
+      'api::teacher.teacher'
+    >;
+    title: Attribute.String & Attribute.Private;
+  };
+}
+
+export interface EntriesStudyEntry extends Schema.Component {
+  collectionName: 'components_entries_study_entries';
+  info: {
+    name: 'study_entry';
+    displayName: 'study_entry';
+    icon: 'pen-fancy';
+    description: '';
+  };
+  attributes: {
+    field_of_study: Attribute.Relation<
+      'entries.study-entry',
+      'oneToOne',
+      'api::field-of-study.field-of-study'
+    >;
+    title: Attribute.String & Attribute.Private;
+  };
+}
+
+export interface EntriesStatisticEntry extends Schema.Component {
+  collectionName: 'components_entries_statistic_entries';
+  info: {
+    name: 'statistic_entry';
+    displayName: 'statistic_entry';
+    icon: 'user-graduate';
+  };
+  attributes: {
+    year: Attribute.String & Attribute.Required;
+    single_entry: Attribute.Component<'entries.single-entry', true>;
+  };
+}
+
+export interface EntriesSingleEntry extends Schema.Component {
+  collectionName: 'components_entries_single_entries';
+  info: {
+    name: 'single_entry';
+    displayName: 'single_entry';
+    icon: 'angle-right';
+  };
+  attributes: {
+    title: Attribute.String & Attribute.Required;
+    value: Attribute.String & Attribute.Required;
+  };
+}
+
+export interface EntriesGallery extends Schema.Component {
+  collectionName: 'components_entries_galleries';
+  info: {
+    name: 'gallery';
+    displayName: 'gallery';
+    icon: 'grimace';
+    description: '';
+  };
+  attributes: {
+    galleries_uat: Attribute.Relation<
+      'entries.gallery',
+      'oneToOne',
+      'api::gallery-uat.gallery-uat'
+    >;
+    title: Attribute.String & Attribute.Private;
+  };
+}
+
+export interface EntriesFestivalEntry extends Schema.Component {
+  collectionName: 'components_entries_festival_entries';
+  info: {
+    name: 'festival_entry';
+    displayName: 'festival_entry';
+    icon: 'baby-carriage';
+    description: '';
+  };
+  attributes: {
+    festival: Attribute.Relation<
+      'entries.festival-entry',
+      'oneToOne',
+      'api::festival.festival'
+    >;
+    title: Attribute.String & Attribute.Private;
+  };
+}
+
+export interface EntriesEuProjectEntry extends Schema.Component {
+  collectionName: 'components_entries_eu_project_entries';
+  info: {
+    name: 'eu_project_entry';
+    displayName: 'eu_project_entry';
+    icon: 'desktop';
+  };
+  attributes: {
+    title: Attribute.String & Attribute.Required;
+    link: Attribute.String & Attribute.Required;
+    description: Attribute.String;
+  };
+}
+
 export interface SharedYouTubePlayerSlice extends Schema.Component {
   collectionName: 'components_shared_you_tube_player_slices';
   info: {
@@ -337,224 +552,23 @@ export interface SharedApplicationsAtUniversity extends Schema.Component {
   };
 }
 
-export interface NavigationInternalLink extends Schema.Component {
-  collectionName: 'components_navigation_internal_links';
-  info: {
-    name: 'InternalLink';
-    displayName: 'InternalLink';
-    icon: 'link';
-    description: '';
-  };
-  attributes: {
-    title: Attribute.String & Attribute.Required;
-    path: Attribute.String;
-  };
-}
-
-export interface NavigationImageBoxLink extends Schema.Component {
-  collectionName: 'components_navigation_image_box_links';
-  info: {
-    name: 'ImageBoxLink';
-    displayName: 'ImageBoxLink';
-    icon: 'image';
-    description: '';
-  };
-  attributes: {
-    title: Attribute.String & Attribute.Required;
-    subtitle: Attribute.String;
-    image_200x70: Attribute.Media<'images'> & Attribute.Required;
-  };
-}
-
-export interface NavigationFooterSection extends Schema.Component {
-  collectionName: 'components_navigation_footer_sections';
-  info: {
-    name: 'FooterSection';
-    displayName: 'FooterSection';
-    icon: 'bookmark';
-    description: '';
-  };
-  attributes: {
-    links: Attribute.Component<'navigation.internal-link', true>;
-    title: Attribute.String;
-  };
-}
-
-export interface NavigationExternalLink extends Schema.Component {
-  collectionName: 'components_navigation_external_links';
-  info: {
-    name: 'ExternalLink';
-    displayName: 'ExternalLink';
-    icon: 'external-link-alt';
-    description: '';
-  };
-  attributes: {
-    title: Attribute.String;
-    url: Attribute.String & Attribute.Required;
-  };
-}
-
-export interface NavigationDownloadLink extends Schema.Component {
-  collectionName: 'components_navigation_download_links';
-  info: {
-    name: 'DownloadLink';
-    displayName: 'DownloadLink';
-    icon: 'apple-alt';
-  };
-  attributes: {
-    title: Attribute.String & Attribute.Required;
-    url: Attribute.String & Attribute.Required;
-  };
-}
-
-export interface NavigationConditionalInternalLink extends Schema.Component {
-  collectionName: 'components_navigation_conditional_internal_links';
-  info: {
-    name: 'ConditionalInternalLink';
-    displayName: 'ConditionalInternalLink';
-    icon: 'external-link-square-alt';
-  };
-  attributes: {
-    title: Attribute.String & Attribute.Required;
-    subtitle: Attribute.String;
-    isVisible: Attribute.Boolean &
-      Attribute.Required &
-      Attribute.DefaultTo<true>;
-  };
-}
-
-export interface NavigationConditionalExternalLink extends Schema.Component {
-  collectionName: 'components_navigation_conditional_external_links';
-  info: {
-    name: 'ConditionalExternalLink';
-    displayName: 'ConditionalExternalLink';
-    icon: 'unlink';
-    description: '';
-  };
-  attributes: {
-    url: Attribute.String & Attribute.Required;
-    title: Attribute.String;
-    isVisible: Attribute.Boolean &
-      Attribute.Required &
-      Attribute.DefaultTo<true>;
-  };
-}
-
-export interface EntriesTeacherEntry extends Schema.Component {
-  collectionName: 'components_entries_teacher_entries';
-  info: {
-    name: 'teacher_entry';
-    displayName: 'teacher_entry';
-    icon: 'microscope';
-    description: '';
-  };
-  attributes: {
-    teacher: Attribute.Relation<
-      'entries.teacher-entry',
-      'oneToOne',
-      'api::teacher.teacher'
-    >;
-    title: Attribute.String & Attribute.Private;
-  };
-}
-
-export interface EntriesStudyEntry extends Schema.Component {
-  collectionName: 'components_entries_study_entries';
-  info: {
-    name: 'study_entry';
-    displayName: 'study_entry';
-    icon: 'pen-fancy';
-    description: '';
-  };
-  attributes: {
-    field_of_study: Attribute.Relation<
-      'entries.study-entry',
-      'oneToOne',
-      'api::field-of-study.field-of-study'
-    >;
-    title: Attribute.String & Attribute.Private;
-  };
-}
-
-export interface EntriesStatisticEntry extends Schema.Component {
-  collectionName: 'components_entries_statistic_entries';
-  info: {
-    name: 'statistic_entry';
-    displayName: 'statistic_entry';
-    icon: 'user-graduate';
-  };
-  attributes: {
-    year: Attribute.String & Attribute.Required;
-    single_entry: Attribute.Component<'entries.single-entry', true>;
-  };
-}
-
-export interface EntriesSingleEntry extends Schema.Component {
-  collectionName: 'components_entries_single_entries';
-  info: {
-    name: 'single_entry';
-    displayName: 'single_entry';
-    icon: 'angle-right';
-  };
-  attributes: {
-    title: Attribute.String & Attribute.Required;
-    value: Attribute.String & Attribute.Required;
-  };
-}
-
-export interface EntriesGallery extends Schema.Component {
-  collectionName: 'components_entries_galleries';
-  info: {
-    name: 'gallery';
-    displayName: 'gallery';
-    icon: 'grimace';
-    description: '';
-  };
-  attributes: {
-    galleries_uat: Attribute.Relation<
-      'entries.gallery',
-      'oneToOne',
-      'api::gallery-uat.gallery-uat'
-    >;
-    title: Attribute.String & Attribute.Private;
-  };
-}
-
-export interface EntriesFestivalEntry extends Schema.Component {
-  collectionName: 'components_entries_festival_entries';
-  info: {
-    name: 'festival_entry';
-    displayName: 'festival_entry';
-    icon: 'baby-carriage';
-    description: '';
-  };
-  attributes: {
-    festival: Attribute.Relation<
-      'entries.festival-entry',
-      'oneToOne',
-      'api::festival.festival'
-    >;
-    title: Attribute.String & Attribute.Private;
-  };
-}
-
-export interface EntriesEuProjectEntry extends Schema.Component {
-  collectionName: 'components_entries_eu_project_entries';
-  info: {
-    name: 'eu_project_entry';
-    displayName: 'eu_project_entry';
-    icon: 'desktop';
-  };
-  attributes: {
-    title: Attribute.String & Attribute.Required;
-    link: Attribute.String & Attribute.Required;
-    description: Attribute.String;
-  };
-}
-
 declare module '@strapi/types' {
   export module Shared {
     export interface Components {
+      'navigation.internal-link': NavigationInternalLink;
+      'navigation.image-box-link': NavigationImageBoxLink;
+      'navigation.footer-section': NavigationFooterSection;
+      'navigation.external-link': NavigationExternalLink;
+      'navigation.download-link': NavigationDownloadLink;
+      'navigation.conditional-internal-link': NavigationConditionalInternalLink;
+      'navigation.conditional-external-link': NavigationConditionalExternalLink;
+      'entries.teacher-entry': EntriesTeacherEntry;
+      'entries.study-entry': EntriesStudyEntry;
+      'entries.statistic-entry': EntriesStatisticEntry;
+      'entries.single-entry': EntriesSingleEntry;
+      'entries.gallery': EntriesGallery;
+      'entries.festival-entry': EntriesFestivalEntry;
+      'entries.eu-project-entry': EntriesEuProjectEntry;
       'shared.you-tube-player-slice': SharedYouTubePlayerSlice;
       'shared.video-with-text-slice': SharedVideoWithTextSlice;
       'shared.text-with-image': SharedTextWithImage;
@@ -578,20 +592,6 @@ declare module '@strapi/types' {
       'shared.cards': SharedCards;
       'shared.card-item': SharedCardItem;
       'shared.applications-at-university': SharedApplicationsAtUniversity;
-      'navigation.internal-link': NavigationInternalLink;
-      'navigation.image-box-link': NavigationImageBoxLink;
-      'navigation.footer-section': NavigationFooterSection;
-      'navigation.external-link': NavigationExternalLink;
-      'navigation.download-link': NavigationDownloadLink;
-      'navigation.conditional-internal-link': NavigationConditionalInternalLink;
-      'navigation.conditional-external-link': NavigationConditionalExternalLink;
-      'entries.teacher-entry': EntriesTeacherEntry;
-      'entries.study-entry': EntriesStudyEntry;
-      'entries.statistic-entry': EntriesStatisticEntry;
-      'entries.single-entry': EntriesSingleEntry;
-      'entries.gallery': EntriesGallery;
-      'entries.festival-entry': EntriesFestivalEntry;
-      'entries.eu-project-entry': EntriesEuProjectEntry;
     }
   }
 }

@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useState } from "react";
+import React, { useState } from "react";
 import { NodeViewWrapper, NodeViewContent } from "@tiptap/react";
 import { Box, Flex } from "@strapi/design-system";
 import { chakra, Button } from "@chakra-ui/react";
@@ -13,7 +13,7 @@ function FlexboxComponent({
     updateAttributes,
     editor,
     getPos,
-}: PropsWithChildren<FlexboxComponentProps>) {
+}: FlexboxComponentProps) {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [mediaLibVisible, setMediaLibVisible] = useState(false);
 

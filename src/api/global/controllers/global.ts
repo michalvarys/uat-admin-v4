@@ -131,6 +131,12 @@ export default {
         footer_sections: {
           populate: "*",
         },
+        logo: {
+          populate: "*",
+        },
+        logo_dark: {
+          populate: "*",
+        },
       },
     });
 
