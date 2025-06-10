@@ -6,7 +6,7 @@ import {
 } from "@chakra-ui/react"
 import createCache from "@emotion/cache"
 import { CacheProvider } from "@emotion/react"
-import Iframe, { FrameContextConsumer } from "react-frame-component"
+import Iframe, { FrameContextConsumer } from "./components/iframe"
 import { ChakraProvider } from "../../../../theme"
 
 function memoize<T extends object, R>(func: (arg: T) => R): (arg: T) => R {
