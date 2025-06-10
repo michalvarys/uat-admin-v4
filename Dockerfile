@@ -1,5 +1,5 @@
 # Creating multi-stage build for production
-FROM node:18-alpine as build
+FROM node:20-alpine AS build
 RUN apk update && apk add --no-cache build-base gcc autoconf automake zlib-dev libpng-dev vips-dev git > /dev/null 2>&1
 ENV NODE_ENV=production
 
@@ -13,8 +13,8 @@ COPY . .
 RUN yarn build
 
 # Creating final production image
-FROM node:18-alpine
-RUN apk add --no-cache vips-dev
+FROM node:20-alpine
+RUN apk update && apk add --no-cache vips-dev && rm -rf /var/cache/apk/*
 ENV NODE_ENV=production
 WORKDIR /opt/
 COPY --from=build /opt/node_modules ./node_modules
@@ -23,7 +23,8 @@ COPY --from=build /opt/app ./
 ENV PATH /opt/node_modules/.bin:$PATH
 
 RUN chown -R node:node /opt/app
-RUN chmod 777 -R /opt/app/public
+# Use more restrictive permissions instead of 777
+RUN chmod 755 -R /opt/app/public
 USER node
 EXPOSE 1337
 CMD ["yarn", "start"]

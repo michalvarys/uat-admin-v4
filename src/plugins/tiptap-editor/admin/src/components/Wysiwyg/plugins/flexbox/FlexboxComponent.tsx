@@ -19,21 +19,7 @@ function FlexboxComponent({
 
     const {
         flexDirection,
-        setFlexDirection,
-        padding,
-        setPadding,
-        margin,
-        setMargin,
-        backgroundColorKey,
-        setBackgroundColorKey,
-        background,
-        setBackground,
-        backgroundImage,
         setBackgroundImage,
-        gap,
-        setGap,
-        responsiveSettings,
-        setResponsiveSettings,
         containerStyle,
         getAttributes,
     } = useFlexboxSettings(node.attrs);
@@ -144,21 +130,7 @@ function FlexboxComponent({
                 onClose={() => setIsDialogOpen(false)}
                 onApply={handleApply}
                 onOpenMediaLib={() => setMediaLibVisible(true)}
-                flexDirection={flexDirection}
-                setFlexDirection={setFlexDirection}
-                gap={gap}
-                setGap={setGap}
-                padding={padding}
-                setPadding={setPadding}
-                margin={margin}
-                setMargin={setMargin}
-                backgroundColorKey={backgroundColorKey}
-                setBackgroundColorKey={setBackgroundColorKey}
-                setBackground={setBackground}
-                backgroundImage={backgroundImage}
-                setBackgroundImage={setBackgroundImage}
-                responsiveSettings={responsiveSettings}
-                setResponsiveSettings={setResponsiveSettings}
+                node={node}
             />
 
             <MediaLib

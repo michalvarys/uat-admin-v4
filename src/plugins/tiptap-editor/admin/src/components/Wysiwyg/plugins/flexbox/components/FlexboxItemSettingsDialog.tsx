@@ -19,31 +19,14 @@ import { Button } from "@chakra-ui/react";
 import { MdSettings, MdImage } from "react-icons/md";
 import { ColorsSelect } from "../../../ColorSelect";
 import { getColorValue } from "../../../tools";
+import { useFlexboxItemSettings } from "../hooks/useFlexboxItemSettings";
 
 type Props = {
     isOpen: boolean;
     onClose: () => void;
     onApply: () => void;
     onOpenMediaLib: () => void;
-    width: string;
-    setWidth: (value: string) => void;
-    flex: string;
-    setFlex: (value: string) => void;
-    height: string;
-    setHeight: (value: string) => void;
-    padding: string;
-    setPadding: (value: string) => void;
-    margin: string;
-    setMargin: (value: string) => void;
-    backgroundColorKey: string;
-    setBackgroundColorKey: (value: string) => void;
-    setBackground: (value: string) => void;
-    backgroundImage: string;
-    setBackgroundImage: (value: string) => void;
-    alignSelf: string;
-    setAlignSelf: (value: string) => void;
-    order: string;
-    setOrder: (value: string) => void;
+    node: any
 };
 
 function FlexboxItemSettingsDialog({
@@ -51,26 +34,32 @@ function FlexboxItemSettingsDialog({
     onClose,
     onApply,
     onOpenMediaLib,
-    width,
-    setWidth,
-    flex,
-    setFlex,
-    height,
-    setHeight,
-    padding,
-    setPadding,
-    margin,
-    setMargin,
-    backgroundColorKey,
-    setBackgroundColorKey,
-    setBackground,
-    backgroundImage,
-    setBackgroundImage,
-    alignSelf,
-    setAlignSelf,
-    order,
-    setOrder,
+    node
 }: PropsWithChildren<Props>) {
+
+    const {
+        width,
+        setWidth,
+        flex,
+        setFlex,
+        height,
+        setHeight,
+        padding,
+        setPadding,
+        margin,
+        setMargin,
+        backgroundColorKey,
+        setBackgroundColorKey,
+        background,
+        setBackground,
+        backgroundImage,
+        setBackgroundImage,
+        alignSelf,
+        setAlignSelf,
+        order,
+        setOrder,
+    } = useFlexboxItemSettings(node.attrs);
+
     const [activeTab, setActiveTab] = React.useState(0);
 
     const handleColorChange = (value: string) => {

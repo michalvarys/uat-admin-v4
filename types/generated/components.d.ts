@@ -337,6 +337,109 @@ export interface SharedApplicationsAtUniversity extends Schema.Component {
   };
 }
 
+export interface NavigationInternalLink extends Schema.Component {
+  collectionName: 'components_navigation_internal_links';
+  info: {
+    name: 'InternalLink';
+    displayName: 'InternalLink';
+    icon: 'link';
+    description: '';
+  };
+  attributes: {
+    title: Attribute.String & Attribute.Required;
+    path: Attribute.String;
+  };
+}
+
+export interface NavigationImageBoxLink extends Schema.Component {
+  collectionName: 'components_navigation_image_box_links';
+  info: {
+    name: 'ImageBoxLink';
+    displayName: 'ImageBoxLink';
+    icon: 'image';
+    description: '';
+  };
+  attributes: {
+    title: Attribute.String & Attribute.Required;
+    subtitle: Attribute.String;
+    image_200x70: Attribute.Media<'images'> & Attribute.Required;
+  };
+}
+
+export interface NavigationFooterSection extends Schema.Component {
+  collectionName: 'components_navigation_footer_sections';
+  info: {
+    name: 'FooterSection';
+    displayName: 'FooterSection';
+    icon: 'bookmark';
+    description: '';
+  };
+  attributes: {
+    links: Attribute.Component<'navigation.internal-link', true>;
+    title: Attribute.String;
+  };
+}
+
+export interface NavigationExternalLink extends Schema.Component {
+  collectionName: 'components_navigation_external_links';
+  info: {
+    name: 'ExternalLink';
+    displayName: 'ExternalLink';
+    icon: 'external-link-alt';
+    description: '';
+  };
+  attributes: {
+    title: Attribute.String;
+    url: Attribute.String & Attribute.Required;
+  };
+}
+
+export interface NavigationDownloadLink extends Schema.Component {
+  collectionName: 'components_navigation_download_links';
+  info: {
+    name: 'DownloadLink';
+    displayName: 'DownloadLink';
+    icon: 'apple-alt';
+  };
+  attributes: {
+    title: Attribute.String & Attribute.Required;
+    url: Attribute.String & Attribute.Required;
+  };
+}
+
+export interface NavigationConditionalInternalLink extends Schema.Component {
+  collectionName: 'components_navigation_conditional_internal_links';
+  info: {
+    name: 'ConditionalInternalLink';
+    displayName: 'ConditionalInternalLink';
+    icon: 'external-link-square-alt';
+  };
+  attributes: {
+    title: Attribute.String & Attribute.Required;
+    subtitle: Attribute.String;
+    isVisible: Attribute.Boolean &
+      Attribute.Required &
+      Attribute.DefaultTo<true>;
+  };
+}
+
+export interface NavigationConditionalExternalLink extends Schema.Component {
+  collectionName: 'components_navigation_conditional_external_links';
+  info: {
+    name: 'ConditionalExternalLink';
+    displayName: 'ConditionalExternalLink';
+    icon: 'unlink';
+    description: '';
+  };
+  attributes: {
+    url: Attribute.String & Attribute.Required;
+    title: Attribute.String;
+    isVisible: Attribute.Boolean &
+      Attribute.Required &
+      Attribute.DefaultTo<true>;
+  };
+}
+
 export interface EntriesTeacherEntry extends Schema.Component {
   collectionName: 'components_entries_teacher_entries';
   info: {
@@ -449,109 +552,6 @@ export interface EntriesEuProjectEntry extends Schema.Component {
   };
 }
 
-export interface NavigationInternalLink extends Schema.Component {
-  collectionName: 'components_navigation_internal_links';
-  info: {
-    name: 'InternalLink';
-    displayName: 'InternalLink';
-    icon: 'link';
-    description: '';
-  };
-  attributes: {
-    title: Attribute.String & Attribute.Required;
-    path: Attribute.String;
-  };
-}
-
-export interface NavigationImageBoxLink extends Schema.Component {
-  collectionName: 'components_navigation_image_box_links';
-  info: {
-    name: 'ImageBoxLink';
-    displayName: 'ImageBoxLink';
-    icon: 'image';
-    description: '';
-  };
-  attributes: {
-    title: Attribute.String & Attribute.Required;
-    subtitle: Attribute.String;
-    image_200x70: Attribute.Media<'images'> & Attribute.Required;
-  };
-}
-
-export interface NavigationFooterSection extends Schema.Component {
-  collectionName: 'components_navigation_footer_sections';
-  info: {
-    name: 'FooterSection';
-    displayName: 'FooterSection';
-    icon: 'bookmark';
-    description: '';
-  };
-  attributes: {
-    links: Attribute.Component<'navigation.internal-link', true>;
-    title: Attribute.String;
-  };
-}
-
-export interface NavigationExternalLink extends Schema.Component {
-  collectionName: 'components_navigation_external_links';
-  info: {
-    name: 'ExternalLink';
-    displayName: 'ExternalLink';
-    icon: 'external-link-alt';
-    description: '';
-  };
-  attributes: {
-    title: Attribute.String;
-    url: Attribute.String & Attribute.Required;
-  };
-}
-
-export interface NavigationDownloadLink extends Schema.Component {
-  collectionName: 'components_navigation_download_links';
-  info: {
-    name: 'DownloadLink';
-    displayName: 'DownloadLink';
-    icon: 'apple-alt';
-  };
-  attributes: {
-    title: Attribute.String & Attribute.Required;
-    url: Attribute.String & Attribute.Required;
-  };
-}
-
-export interface NavigationConditionalInternalLink extends Schema.Component {
-  collectionName: 'components_navigation_conditional_internal_links';
-  info: {
-    name: 'ConditionalInternalLink';
-    displayName: 'ConditionalInternalLink';
-    icon: 'external-link-square-alt';
-  };
-  attributes: {
-    title: Attribute.String & Attribute.Required;
-    subtitle: Attribute.String;
-    isVisible: Attribute.Boolean &
-      Attribute.Required &
-      Attribute.DefaultTo<true>;
-  };
-}
-
-export interface NavigationConditionalExternalLink extends Schema.Component {
-  collectionName: 'components_navigation_conditional_external_links';
-  info: {
-    name: 'ConditionalExternalLink';
-    displayName: 'ConditionalExternalLink';
-    icon: 'unlink';
-    description: '';
-  };
-  attributes: {
-    url: Attribute.String & Attribute.Required;
-    title: Attribute.String;
-    isVisible: Attribute.Boolean &
-      Attribute.Required &
-      Attribute.DefaultTo<true>;
-  };
-}
-
 declare module '@strapi/types' {
   export module Shared {
     export interface Components {
@@ -578,13 +578,6 @@ declare module '@strapi/types' {
       'shared.cards': SharedCards;
       'shared.card-item': SharedCardItem;
       'shared.applications-at-university': SharedApplicationsAtUniversity;
-      'entries.teacher-entry': EntriesTeacherEntry;
-      'entries.study-entry': EntriesStudyEntry;
-      'entries.statistic-entry': EntriesStatisticEntry;
-      'entries.single-entry': EntriesSingleEntry;
-      'entries.gallery': EntriesGallery;
-      'entries.festival-entry': EntriesFestivalEntry;
-      'entries.eu-project-entry': EntriesEuProjectEntry;
       'navigation.internal-link': NavigationInternalLink;
       'navigation.image-box-link': NavigationImageBoxLink;
       'navigation.footer-section': NavigationFooterSection;
@@ -592,6 +585,13 @@ declare module '@strapi/types' {
       'navigation.download-link': NavigationDownloadLink;
       'navigation.conditional-internal-link': NavigationConditionalInternalLink;
       'navigation.conditional-external-link': NavigationConditionalExternalLink;
+      'entries.teacher-entry': EntriesTeacherEntry;
+      'entries.study-entry': EntriesStudyEntry;
+      'entries.statistic-entry': EntriesStatisticEntry;
+      'entries.single-entry': EntriesSingleEntry;
+      'entries.gallery': EntriesGallery;
+      'entries.festival-entry': EntriesFestivalEntry;
+      'entries.eu-project-entry': EntriesEuProjectEntry;
     }
   }
 }

@@ -23,27 +23,14 @@ import { MdImage } from "react-icons/md";
 import { ColorsSelect } from "../../../ColorSelect";
 import { getColorValue } from "../../../tools";
 import { FlexDirection, ResponsiveSettings } from "../types";
+import { useFlexboxSettings } from "../hooks/useFlexboxSettings";
 
 type Props = {
     isOpen: boolean;
     onClose: () => void;
     onApply: () => void;
     onOpenMediaLib: () => void;
-    flexDirection: FlexDirection;
-    setFlexDirection: (value: FlexDirection) => void;
-    gap: string;
-    setGap: (value: string) => void;
-    padding: string;
-    setPadding: (value: string) => void;
-    margin: string;
-    setMargin: (value: string) => void;
-    backgroundColorKey: string;
-    setBackgroundColorKey: (value: string) => void;
-    setBackground: (value: string) => void;
-    backgroundImage: string;
-    setBackgroundImage: (value: string) => void;
-    responsiveSettings: ResponsiveSettings;
-    setResponsiveSettings: (value: ResponsiveSettings) => void;
+    node: any
 };
 
 function FlexboxSettingsDialog({
@@ -51,25 +38,29 @@ function FlexboxSettingsDialog({
     onClose,
     onApply,
     onOpenMediaLib,
-    flexDirection,
-    setFlexDirection,
-    gap,
-    setGap,
-    padding,
-    setPadding,
-    margin,
-    setMargin,
-    backgroundColorKey,
-    setBackgroundColorKey,
-    setBackground,
-    backgroundImage,
-    setBackgroundImage,
-    responsiveSettings,
-    setResponsiveSettings,
+    node
 }: PropsWithChildren<Props>) {
     const [activeTab, setActiveTab] = React.useState(0);
     const [mobileAccordionExpanded, setMobileAccordionExpanded] = React.useState(true);
     const [tabletAccordionExpanded, setTabletAccordionExpanded] = React.useState(false);
+
+    const {
+        flexDirection,
+        setFlexDirection,
+        padding,
+        setPadding,
+        margin,
+        setMargin,
+        backgroundColorKey,
+        setBackgroundColorKey,
+        setBackground,
+        backgroundImage,
+        setBackgroundImage,
+        gap,
+        setGap,
+        responsiveSettings,
+        setResponsiveSettings,
+    } = useFlexboxSettings(node.attrs);
 
     const handleColorChange = (value: string) => {
         setBackgroundColorKey(value);

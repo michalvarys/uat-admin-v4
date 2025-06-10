@@ -20,26 +20,7 @@ function FlexboxItemComponent({
     const [mediaLibVisible, setMediaLibVisible] = useState(false);
 
     const {
-        width,
-        setWidth,
-        flex,
-        setFlex,
-        height,
-        setHeight,
-        padding,
-        setPadding,
-        margin,
-        setMargin,
-        backgroundColorKey,
-        setBackgroundColorKey,
-        background,
-        setBackground,
-        backgroundImage,
         setBackgroundImage,
-        alignSelf,
-        setAlignSelf,
-        order,
-        setOrder,
         itemStyle,
         getAttributes,
     } = useFlexboxItemSettings(node.attrs);
@@ -155,25 +136,7 @@ function FlexboxItemComponent({
                 onClose={() => setIsDialogOpen(false)}
                 onApply={handleApply}
                 onOpenMediaLib={() => setMediaLibVisible(true)}
-                width={width}
-                setWidth={setWidth}
-                flex={flex}
-                setFlex={setFlex}
-                height={height}
-                setHeight={setHeight}
-                padding={padding}
-                setPadding={setPadding}
-                margin={margin}
-                setMargin={setMargin}
-                backgroundColorKey={backgroundColorKey}
-                setBackgroundColorKey={setBackgroundColorKey}
-                setBackground={setBackground}
-                backgroundImage={backgroundImage}
-                setBackgroundImage={setBackgroundImage}
-                alignSelf={alignSelf}
-                setAlignSelf={setAlignSelf}
-                order={order}
-                setOrder={setOrder}
+                node={node}
             />
 
             <MediaLib
