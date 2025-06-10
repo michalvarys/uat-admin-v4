@@ -1,5 +1,5 @@
 import TextStyle from "@tiptap/extension-text-style";
-import Color from "@tiptap/extension-color";
+import Color from "./ColorExtension";
 import FontFamily from "@tiptap/extension-font-family";
 
 // Configure TextStyle extension
