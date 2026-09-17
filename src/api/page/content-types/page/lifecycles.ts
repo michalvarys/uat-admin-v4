@@ -1,22 +1,35 @@
-import slugify from "slugify";
+import { buildUniqueSlug } from "../../../../utils/slug";
+
+const UID = "api::page.page";
 
 export default {
   async beforeCreate(event) {
-    const { data, where, select, populate } = event.params;
+    const { data } = event.params;
+
     if (data.title && !data.slug) {
-      event.params.data.slug = slugify(data.title, {
-        lower: true,
-        remove: /[*+~./()'"!:@.,=&]/g,
+      event.params.data.slug = await buildUniqueSlug({
+        strapi,
+        uid: UID,
+        title: data.title,
+        locale: data.locale,
       });
     }
   },
 
   async beforeUpdate(event) {
-    const { data, where, select, populate } = event.params;
+    const { data, where } = event.params;
+
+    // Původní chování: u stránek se slug drží synchronizovaný s názvem,
+    // proto se přegeneruje i tehdy, když slug už nějaký je.
     if (data.title) {
-      event.params.data.slug = slugify(data.title, {
-        lower: true,
-        remove: /[*+~./()'"!:@.,=&]/g,
+      event.params.data.slug = await buildUniqueSlug({
+        strapi,
+        uid: UID,
+        title: data.title,
+        locale: data.locale,
+        // vlastní záznam se z kontroly vynechá, jinak by si při každé
+        // úpravě názvu přidával další příponu
+        currentId: where?.id,
       });
     }
   },
