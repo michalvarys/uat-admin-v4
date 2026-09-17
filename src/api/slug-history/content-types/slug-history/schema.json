@@ -1,0 +1,44 @@
+{
+  "kind": "collectionType",
+  "collectionName": "slug_histories",
+  "info": {
+    "singularName": "slug-history",
+    "pluralName": "slug-histories",
+    "displayName": "Slug history",
+    "description": "Staré adresy stránek a novinek. Slouží k přesměrování 301, aby se po přejmenování neztratily odkazy ani pozice ve vyhledávačích."
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "content-manager": {
+      "visible": true
+    },
+    "content-type-builder": {
+      "visible": true
+    }
+  },
+  "attributes": {
+    "oldSlug": {
+      "type": "string",
+      "required": true
+    },
+    "newSlug": {
+      "type": "string",
+      "required": true
+    },
+    "contentType": {
+      "type": "enumeration",
+      "enum": ["page", "news"],
+      "required": true
+    },
+    "locale": {
+      "type": "string",
+      "required": true
+    },
+    "entryId": {
+      "type": "integer",
+      "required": true
+    }
+  }
+}

@@ -5,7 +5,11 @@ ENV NODE_ENV=production
 
 WORKDIR /opt/
 COPY package.json yarn.lock ./
-RUN yarn global add node-gyp
+# node-gyp se instaluje bez verze, takže yarn bral nejnovější — ta od
+# verze 11 vyžaduje Node 22+, zatímco image stojí na Node 18, a build
+# padal na "The engine node is incompatible". Připnuto na poslední
+# verzi kompatibilní s Node 18.
+RUN yarn global add node-gyp@10.2.0
 RUN yarn config set network-timeout 600000 -g && yarn install --production
 ENV PATH /opt/node_modules/.bin:$PATH
 WORKDIR /opt/app

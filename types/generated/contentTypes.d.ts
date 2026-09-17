@@ -1979,6 +1979,40 @@ export interface ApiNewsEntryNewsEntry extends Schema.CollectionType {
   };
 }
 
+export interface ApiSlugHistorySlugHistory extends Schema.CollectionType {
+  collectionName: 'slug_histories';
+  info: {
+    singularName: 'slug-history';
+    pluralName: 'slug-histories';
+    displayName: 'Slug history';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    oldSlug: Attribute.String & Attribute.Required;
+    newSlug: Attribute.String & Attribute.Required;
+    contentType: Attribute.Enumeration<['page', 'news']> & Attribute.Required;
+    locale: Attribute.String & Attribute.Required;
+    entryId: Attribute.Integer & Attribute.Required;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::slug-history.slug-history',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::slug-history.slug-history',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiPagePage extends Schema.CollectionType {
   collectionName: 'pages';
   info: {
@@ -2180,6 +2214,7 @@ declare module '@strapi/types' {
       'api::menu-student.menu-student': ApiMenuStudentMenuStudent;
       'api::news-entry.news-entry': ApiNewsEntryNewsEntry;
       'api::page.page': ApiPagePage;
+      'api::slug-history.slug-history': ApiSlugHistorySlugHistory;
       'api::teacher.teacher': ApiTeacherTeacher;
     }
   }

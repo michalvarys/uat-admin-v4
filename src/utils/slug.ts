@@ -65,3 +65,81 @@ export async function buildUniqueSlug({
   // Pojistka pro nepravděpodobný případ, že by bylo obsazeno i 20 variant.
   return `${base}-${Date.now()}`;
 }
+
+/**
+ * Zaznamená změnu slugu, aby staré adresy mohly přesměrovat na nové.
+ *
+ * Volá se z beforeUpdate, kde ještě známe původní hodnotu. Bez toho by
+ * po přejmenování stránky přestal fungovat každý dosud sdílený odkaz
+ * a vyhledávače by adresu vyhodnotily jako 404.
+ */
+export async function recordSlugChange({
+  strapi,
+  contentType,
+  entryId,
+  oldSlug,
+  newSlug,
+  locale,
+}: {
+  strapi: any;
+  contentType: "page" | "news";
+  entryId: number;
+  oldSlug?: string | null;
+  newSlug: string;
+  locale?: string;
+}): Promise<void> {
+  if (!oldSlug || !newSlug || oldSlug === newSlug || !entryId) {
+    return;
+  }
+
+  const lang = locale || "sk";
+
+  try {
+    // Kdyby se stránka přejmenovala tam a zpět, starý záznam by ukazoval
+    // na neplatný cíl — proto se existující dvojice přepisuje.
+    const existing = await strapi.entityService.findMany(
+      "api::slug-history.slug-history",
+      {
+        filters: { oldSlug, contentType, locale: lang },
+        fields: ["id"],
+        limit: 1,
+      }
+    );
+
+    if (existing?.length) {
+      await strapi.entityService.update(
+        "api::slug-history.slug-history",
+        existing[0].id,
+        { data: { newSlug, entryId } }
+      );
+      return;
+    }
+
+    await strapi.entityService.create("api::slug-history.slug-history", {
+      data: { oldSlug, newSlug, contentType, locale: lang, entryId },
+    });
+
+    // Řetěz přesměrování (A → B → C) vyhledávače nemají rádi, proto se
+    // starší záznamy míříci na právě přejmenovaný slug rovnou přesměrují
+    // na nový cíl.
+    const chained = await strapi.entityService.findMany(
+      "api::slug-history.slug-history",
+      {
+        filters: { newSlug: oldSlug, contentType, locale: lang },
+        fields: ["id"],
+      }
+    );
+
+    for (const item of chained || []) {
+      await strapi.entityService.update(
+        "api::slug-history.slug-history",
+        item.id,
+        { data: { newSlug } }
+      );
+    }
+  } catch (error) {
+    // Historie je pomocná evidence — její selhání nesmí zabránit uložení
+    // samotné stránky.
+    strapi.log.warn(`Nepodařilo se zapsat historii slugu: ${error}`);
+  }
+}
