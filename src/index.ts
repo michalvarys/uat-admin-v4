@@ -1,5 +1,7 @@
 import type { Strapi } from "@strapi/strapi";
 
+import { setupRevalidateWebhook } from "./bootstrap/revalidate-webhook";
+
 export default {
   /**
    * An asynchronous register function that runs before
@@ -16,7 +18,11 @@ export default {
    * This gives you an opportunity to set up your data model,
    * run jobs, or perform some special logic.
    */
-  bootstrap({ strapi }: { strapi: Strapi }) {
+  async bootstrap({ strapi }: { strapi: Strapi }) {
     strapi.server.httpServer.requestTimeout = 30 * 60 * 1000;
+
+    // Webhook na přegenerování frontendu se zakládá při každém startu,
+    // aby ho nebylo nutné po obnovení prostředí nastavovat ručně.
+    await setupRevalidateWebhook({ strapi });
   },
 };
