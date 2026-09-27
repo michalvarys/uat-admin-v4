@@ -16,6 +16,7 @@ export default {
     try {
       // Configure the API key for Google Gemini Flash
       const apiKey = process.env.GEMINI_API_KEY;
+      const model = process.env.GEMINI_MODEL || "gemini-3.8-flash";
 
       if (!apiKey) {
         throw new Error("API key is not configured");
@@ -39,7 +40,7 @@ export default {
 
       // Call the Google Gemini Flash API
       const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
         {
           method: "POST",
           headers: {
