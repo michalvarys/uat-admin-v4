@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import { useFetchClient, useNotification } from "@strapi/helper-plugin";
+import { useFetchClient } from "@strapi/helper-plugin";
 import { Page, NewsEntry } from "../plugins/link/types";
 
 interface EditorDataContextType {
@@ -42,52 +42,73 @@ interface EditorDataProviderProps {
     children: ReactNode;
 }
 
+/**
+ * Seznamy se drží mimo komponentu.
+ *
+ * Provider se montuje uvnitř každého editoru, takže na stránce s šesti
+ * bloky vznikne šest kopií stavu a každá si data stahuje zvlášť.
+ * Sdílená paměť zajistí jediný dotaz na celou stránku; slouží jen
+ * k vyplnění nabídky odkazů, takže nemusí být čerstvá.
+ */
+const cache: { pages?: Page[]; news?: NewsEntry[] } = {};
+const pending: { pages?: Promise<Page[]>; news?: Promise<NewsEntry[]> } = {};
+
 export const EditorDataProvider: React.FC<EditorDataProviderProps> = ({ children }) => {
     const [pages, setPages] = useState<Page[]>([]);
     const [newsEntries, setNewsEntries] = useState<NewsEntry[]>([]);
     const [isPagesLoading, setIsPagesLoading] = useState(false);
     const [isNewsEntriesLoading, setIsNewsEntriesLoading] = useState(false);
-    const toggleNotification = useNotification();
     const { get } = useFetchClient();
 
     const fetchPages = async () => {
-        // Only fetch if we don't already have pages
-        if (pages.length > 0 && !isPagesLoading) return;
+        if (cache.pages) {
+            setPages(cache.pages);
+            return;
+        }
 
         try {
             setIsPagesLoading(true);
-            const { data } = await get<Page[] | { data?: Page[] }>(
+
+            // Souběžné editory se svezou na jednom dotazu.
+            pending.pages ??= get<Page[] | { data?: Page[] }>(
                 "/api/pages?pagination[pageSize]=1000&fields[0]=title&fields[1]=slug&fields[2]=locale"
-            );
-            setPages(toList<Page>(data));
-            setIsPagesLoading(false);
+            ).then(({ data }) => toList<Page>(data));
+
+            const list = await pending.pages;
+            cache.pages = list;
+            setPages(list);
         } catch (error) {
-            console.error("Error fetching pages:", error);
-            toggleNotification({
-                type: "warning",
-                message: "Failed to fetch pages",
-            });
+            // Nabídka odkazů se nenaplní, ale psát ani upravovat obsah
+            // to nebrání — vyskakovací varování by editora jen rušilo,
+            // navíc pro každý blok zvlášť. Chyba zůstává v konzoli.
+            pending.pages = undefined;
+            console.error("Nepodařilo se načíst stránky pro nabídku odkazů:", error);
+        } finally {
             setIsPagesLoading(false);
         }
     };
 
     const fetchNewsEntries = async () => {
-        // Only fetch if we don't already have news entries
-        if (newsEntries.length > 0 && !isNewsEntriesLoading) return;
+        if (cache.news) {
+            setNewsEntries(cache.news);
+            return;
+        }
 
         try {
             setIsNewsEntriesLoading(true);
-            const { data } = await get<
+
+            pending.news ??= get<
                 NewsEntry[] | { news?: NewsEntry[]; data?: NewsEntry[] }
-            >("/api/news?pagination[pageSize]=1000&fields[0]=title&fields[1]=slug&fields[2]=locale");
-            setNewsEntries(toList<NewsEntry>(data));
-            setIsNewsEntriesLoading(false);
+            >("/api/news?pagination[pageSize]=1000&fields[0]=title&fields[1]=slug&fields[2]=locale")
+                .then(({ data }) => toList<NewsEntry>(data));
+
+            const list = await pending.news;
+            cache.news = list;
+            setNewsEntries(list);
         } catch (error) {
-            console.error("Error fetching news entries:", error);
-            toggleNotification({
-                type: "warning",
-                message: "Failed to fetch news entries",
-            });
+            pending.news = undefined;
+            console.error("Nepodařilo se načíst novinky pro nabídku odkazů:", error);
+        } finally {
             setIsNewsEntriesLoading(false);
         }
     };
