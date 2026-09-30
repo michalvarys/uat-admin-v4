@@ -13,6 +13,31 @@ interface EditorDataContextType {
 
 const EditorDataContext = createContext<EditorDataContextType | undefined>(undefined);
 
+/**
+ * Vytáhne seznam záznamů z odpovědi API.
+ *
+ * Vlastní controllery v tomhle projektu nevracejí standardní obálku
+ * `{ data: [...] }`: /api/pages vrací pole přímo a /api/news objekt
+ * `{ years, news }`. Editor přitom čekal pole, takže se seznam odkazů
+ * nenaplnil a v administraci vyskočilo „Failed to fetch".
+ */
+function toList<T>(payload: unknown): T[] {
+    if (Array.isArray(payload)) {
+        return payload as T[];
+    }
+
+    if (payload && typeof payload === "object") {
+        const source = payload as Record<string, unknown>;
+        const list = source.news ?? source.data;
+
+        if (Array.isArray(list)) {
+            return list as T[];
+        }
+    }
+
+    return [];
+}
+
 interface EditorDataProviderProps {
     children: ReactNode;
 }
@@ -31,10 +56,10 @@ export const EditorDataProvider: React.FC<EditorDataProviderProps> = ({ children
 
         try {
             setIsPagesLoading(true);
-            const { data } = await get<Page[]>(
-                "/api/pages?pagination[pageSize]=1000&populate=*"
+            const { data } = await get<Page[] | { data?: Page[] }>(
+                "/api/pages?pagination[pageSize]=1000&fields[0]=title&fields[1]=slug&fields[2]=locale"
             );
-            setPages(data || []);
+            setPages(toList<Page>(data));
             setIsPagesLoading(false);
         } catch (error) {
             console.error("Error fetching pages:", error);
@@ -52,10 +77,10 @@ export const EditorDataProvider: React.FC<EditorDataProviderProps> = ({ children
 
         try {
             setIsNewsEntriesLoading(true);
-            const { data } = await get<NewsEntry[]>(
-                "/api/news?pagination[pageSize]=1000&populate=*"
-            );
-            setNewsEntries(data);
+            const { data } = await get<
+                NewsEntry[] | { news?: NewsEntry[]; data?: NewsEntry[] }
+            >("/api/news?pagination[pageSize]=1000&fields[0]=title&fields[1]=slug&fields[2]=locale");
+            setNewsEntries(toList<NewsEntry>(data));
             setIsNewsEntriesLoading(false);
         } catch (error) {
             console.error("Error fetching news entries:", error);
