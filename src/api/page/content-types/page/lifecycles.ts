@@ -1,4 +1,8 @@
-import { buildUniqueSlug, recordSlugChange } from "../../../../utils/slug";
+import {
+  buildUniqueSlug,
+  ensureUniqueSlug,
+  recordSlugChange,
+} from "../../../../utils/slug";
 
 const UID = "api::page.page";
 
@@ -6,13 +10,20 @@ export default {
   async beforeCreate(event) {
     const { data } = event.params;
 
-    if (data.title && !data.slug) {
-      event.params.data.slug = await buildUniqueSlug({
-        strapi,
-        uid: UID,
-        title: data.title,
-        locale: data.locale,
-      });
+    // Kontroluje se i slug, který přišel s daty: tlačítko „Fill in from
+    // another locale" ho zkopíruje z originálu, takže by překlad chtěl
+    // uložit hodnotu, kterou už někdo má. Pole je přitom unikátní napříč
+    // jazyky a uložení by skončilo na „This attribute must be unique".
+    const slug = await ensureUniqueSlug({
+      strapi,
+      uid: UID,
+      slug: data.slug,
+      title: data.title,
+      locale: data.locale,
+    });
+
+    if (slug) {
+      event.params.data.slug = slug;
     }
   },
 
