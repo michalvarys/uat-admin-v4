@@ -2,6 +2,17 @@
  * gemini-translate service
  */
 
+/**
+ * Model se bere z prostředí, aby se při jeho vypnutí nemuselo sahat
+ * do kódu — Google starší verze postupně odstavuje a volání pak končí
+ * chybou 404 nebo „model not found".
+ */
+const DEFAULT_MODEL = "gemini-3.8-flash";
+
+/** Základ adresy API; přepsat jde kvůli jiné verzi rozhraní. */
+const DEFAULT_API_BASE =
+  "https://generativelanguage.googleapis.com/v1beta/models";
+
 export default {
   /**
    * Translate content using Google Gemini Flash API
@@ -16,9 +27,13 @@ export default {
     try {
       // Configure the API key for Google Gemini Flash
       const apiKey = process.env.GEMINI_API_KEY;
+      const model = process.env.GEMINI_MODEL || DEFAULT_MODEL;
+      const apiBase = process.env.GEMINI_API_BASE || DEFAULT_API_BASE;
 
       if (!apiKey) {
-        throw new Error("API key is not configured");
+        throw new Error(
+          "Chybí GEMINI_API_KEY — překlad bez klíče volat nejde."
+        );
       }
 
       const body = JSON.stringify({
@@ -39,7 +54,7 @@ export default {
 
       // Call the Google Gemini Flash API
       const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+        `${apiBase}/${model}:generateContent?key=${apiKey}`,
         {
           method: "POST",
           headers: {
@@ -50,10 +65,12 @@ export default {
       );
 
       if (!response.ok) {
-        const errorData = (await response.json()) as any;
-        throw new Error(
-          `Gemini API error: ${errorData.error?.message || response.statusText}`
-        );
+        const errorData = (await response.json().catch(() => ({}))) as any;
+        const detail = errorData.error?.message || response.statusText;
+
+        // Model je v hlášce schválně: nejčastější příčina je, že ho
+        // Google odstavil, a ze samotné zprávy to poznat nejde.
+        throw new Error(`Gemini API (${model}): ${detail}`);
       }
 
       const data = (await response.json()) as any;
