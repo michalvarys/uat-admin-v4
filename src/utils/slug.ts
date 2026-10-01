@@ -37,11 +37,12 @@ export async function buildUniqueSlug({
 }): Promise<string> {
   const base = slugify(title, SLUGIFY_OPTIONS);
 
-  // U výchozího jazyka zůstává slug čistý, ostatní dostanou příponu
-  // jen tehdy, když by se srazily.
+  // Čistý slug má přednost u všech jazyků; přípona se zkouší teprve
+  // tehdy, když je obsazený. Dřív se u cizích jazyků dávala dopředu,
+  // takže i volný slug zbytečně skončil jako „nazev-en".
   const candidates = [base];
   if (locale && locale !== "sk") {
-    candidates.unshift(`${base}-${locale}`);
+    candidates.push(`${base}-${locale}`);
   }
   for (let i = 2; i <= 20; i += 1) {
     candidates.push(locale && locale !== "sk" ? `${base}-${locale}-${i}` : `${base}-${i}`);
@@ -64,6 +65,42 @@ export async function buildUniqueSlug({
 
   // Pojistka pro nepravděpodobný případ, že by bylo obsazeno i 20 variant.
   return `${base}-${Date.now()}`;
+}
+
+/**
+ * Zajistí, že slug bude unikátní — ať už přišel zvenčí, nebo se teprve
+ * tvoří z názvu.
+ *
+ * Tlačítko „Fill in from another locale" v administraci zkopíruje
+ * všechna pole včetně slugu, takže překlad dorazí s hodnotou, kterou už
+ * má originál. Kontrola „vytvoř slug, když žádný není" takový případ
+ * propustí a uložení skončí na „This attribute must be unique".
+ *
+ * Předaný slug se proto bere jako základ a dostane příponu jazyka,
+ * jen když je obsazený.
+ */
+export async function ensureUniqueSlug({
+  strapi,
+  uid,
+  slug,
+  title,
+  locale,
+  currentId,
+}: {
+  strapi: any;
+  uid: string;
+  slug?: string | null;
+  title?: string | null;
+  locale?: string;
+  currentId?: number;
+}): Promise<string | undefined> {
+  const source = slug?.trim() || title?.trim();
+
+  if (!source) {
+    return undefined;
+  }
+
+  return buildUniqueSlug({ strapi, uid, title: source, locale, currentId });
 }
 
 /**
