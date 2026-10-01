@@ -17,6 +17,9 @@ export default [
     },
   },
   "strapi::session",
+  // Musí běžet dřív, než Strapi ověří unikátnost polí — jinak uložení
+  // překladu skončí chybou dřív, než se slug stihne dopočítat.
+  "global::unique-slug",
   "strapi::favicon",
   "strapi::public",
 ];
